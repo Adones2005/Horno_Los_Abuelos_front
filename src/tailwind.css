@@ -1,0 +1,20 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .nav-link {
+    @apply relative pb-2 transition-colors text-gray-700 hover:text-gray-900;
+  }
+  .nav-link::after {
+    content: '';
+    @apply absolute left-0 -bottom-[2px] h-[2px] w-0 bg-[#D9C0A9] transition-all;
+  }
+  .nav-link:hover::after,
+  .active-link.nav-link::after {
+    @apply w-full;
+  }
+  .active-link {
+    @apply text-gray-900;
+  }
+}
