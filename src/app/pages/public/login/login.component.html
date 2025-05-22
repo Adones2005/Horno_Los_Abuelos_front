@@ -1,0 +1,124 @@
+<!-- Capa de fondo -->
+<div class="min-h-screen flex items-center justify-center">
+  <!-- Tarjeta -->
+  <div
+    class="mx-4 w-full max-w-md rounded-2xl bg-white/90 backdrop-blur-sm shadow-lg"
+  >
+    <header
+      class="rounded-t-2xl bg-[#B9A99B] px-8 py-6 text-center text-white"
+    >
+      <h1 class="text-2xl font-semibold tracking-wide">Iniciar sesión</h1>
+    </header>
+
+   <form
+  [formGroup]="form"
+  (ngSubmit)="onSubmit()"
+  class="space-y-6 px-8 py-8"
+  novalidate
+>
+  <!-- ======= usuario ======= -->
+  <div>
+    <label class="mb-2 inline-block text-sm font-medium text-gray-700"
+      >Usuario</label
+    >
+    <div class="relative">
+      <i
+        class="fa-solid fa-user absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+      ></i>
+      <input
+        type="text"
+        formControlName="username"
+        placeholder="Tu nombre de usuario"
+        class="w-full rounded-lg border border-gray-300 bg-white py-2 pl-10 pr-3 text-sm focus:border-[#E5D2BC] focus:outline-none focus:ring-2 focus:ring-[#E5D2BC]"
+        [class.border-red-400]="form.get('username')?.invalid && form.get('username')?.touched"
+      />
+    </div>
+    <p
+      *ngIf="form.get('username')?.invalid && form.get('username')?.touched"
+      class="mt-1 text-xs text-red-500"
+    >
+      Introduce tu usuario.
+    </p>
+  </div>
+
+  <!-- ======= contraseña ======= -->
+  <!-- (se mantiene igual que antes) -->
+  <div>
+    <label class="mb-2 inline-block text-sm font-medium text-gray-700"
+      >Contraseña</label
+    >
+    <div class="relative">
+      <i
+        class="fa-solid fa-lock absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+      ></i>
+      <input
+        type="password"
+        formControlName="password"
+        placeholder="········"
+        class="w-full rounded-lg border border-gray-300 bg-white py-2 pl-10 pr-3 text-sm focus:border-[#E5D2BC] focus:outline-none focus:ring-2 focus:ring-[#E5D2BC]"
+        [class.border-red-400]="form.get('password')?.invalid && form.get('password')?.touched"
+      />
+    </div>
+    <p
+      *ngIf="form.get('password')?.invalid && form.get('password')?.touched"
+      class="mt-1 text-xs text-red-500"
+    >
+      Mínimo 6 caracteres.
+    </p>
+  </div>
+
+      <!-- recordarme + enlace -->
+      <div class="flex items-center justify-between text-sm">
+        <label class="flex items-center gap-2">
+          <input
+            type="checkbox"
+            formControlName="remember"
+            class="h-4 w-4 rounded border-gray-300 text-[#B9A99B] focus:ring-[#B9A99B]"
+          />
+          Recordarme
+        </label>
+
+        <a
+          routerLink="/recuperar"
+          class="text-[#5d554e] hover:underline"
+          >¿Olvidaste tu contraseña?</a
+        >
+      </div>
+
+      <!-- error global -->
+      <p *ngIf="errorMsg" class="text-sm text-red-600">
+        {{ errorMsg }}
+      </p>
+
+      <!-- botón -->
+      <button
+        type="submit"
+        [disabled]="loading"
+        class="inline-flex w-full items-center justify-center gap-2 rounded-full bg-[#E5D2BC] py-2 font-medium text-gray-800 transition hover:bg-[#d9c0a9] disabled:cursor-not-allowed disabled:opacity-50"
+      >
+        <i class="fa-solid fa-sign-in-alt" *ngIf="!loading"></i>
+        <svg
+          *ngIf="loading"
+          class="h-5 w-5 animate-spin"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <circle
+            class="opacity-25"
+            cx="12"
+            cy="12"
+            r="10"
+            stroke="currentColor"
+            stroke-width="4"
+          />
+          <path
+            class="opacity-75"
+            fill="currentColor"
+            d="M4 12a8 8 0 018-8v4l3-3-3-3v4a8 8 0 01-8 8z"
+          />
+        </svg>
+        <span>{{ loading ? 'Entrando…' : 'Acceder' }}</span>
+      </button>
+    </form>
+  </div>
+</div>

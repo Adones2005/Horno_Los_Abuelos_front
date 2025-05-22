@@ -1,12 +1,12 @@
-<!-- Barra superior ( oculta en móviles ) -->
+<!-- Barra superior (oculta en móviles) -->
 <div class="hidden md:block w-full bg-[#F6F2F1] text-sm text-gray-800">
   <div class="container mx-auto flex items-center justify-center gap-6 py-2">
     <div class="flex items-center gap-1">
-      <i data-lucide="phone" class="w-4 h-4"></i>
+      <i class="fa-solid fa-phone text-xs"></i>
       <span>954 140 657</span>
     </div>
     <div class="flex items-center gap-1">
-      <i data-lucide="mail" class="w-4 h-4"></i>
+      <i class="fa-solid fa-envelope text-xs"></i>
       <span>info&#64;hornolosabuelos.com</span>
     </div>
   </div>
@@ -22,50 +22,68 @@
     </a>
 
     <!-- botón hamburguesa (móvil) -->
-    <button
-      (click)="toggleMenu()"
-      class="md:hidden p-2 text-gray-700 focus:outline-none"
-      aria-label="Abrir menú"
-    >
-      <i data-lucide="menu" class="w-6 h-6"></i>
-    </button>
+<button
+  (click)="toggleMenu()"
+  aria-label="Abrir menú"
+  class="md:hidden flex items-center justify-center w-10 h-10 mr-4 rounded-xl bg-white/80 backdrop-blur-md shadow-sm ring-1 ring-inset ring-gray-300 text-gray-600 hover:text-gray-900  hover:bg-white/90 active:bg-white transition focus:outline-none focus:ring-2 focus:ring-[#E5D2BC]"
+>
+  <i class="fa-solid fa-bars text-lg"></i>
+</button>
+
 
     <!-- menú desktop -->
     <ul class="hidden md:flex items-center gap-8 font-medium">
-      <li><a routerLink="/" routerLinkActive="active-link" class="nav-link">Inicio</a></li>
-      <li><a routerLink="/catalogo" routerLinkActive="active-link" class="nav-link">Catálogo</a></li>
+      <li><a routerLink="/" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }" class="nav-link">Inicio</a></li>
+      <li><a routerLink="/catalogo"  routerLinkActive="active-link" class="nav-link">Catálogo</a></li>
       <li><a routerLink="/servicios" routerLinkActive="active-link" class="nav-link">Servicios</a></li>
-      <li><a routerLink="/precios"    routerLinkActive="active-link" class="nav-link">Precios</a></li>
-      <li><a routerLink="/acerca"     routerLinkActive="active-link" class="nav-link">Acerca nosotros</a></li>
-      <li><a routerLink="/contacto"   routerLinkActive="active-link" class="nav-link">Contáctenos</a></li>
+      <li><a routerLink="/precios"   routerLinkActive="active-link" class="nav-link">Precios</a></li>
+      <li><a routerLink="/acerca"    routerLinkActive="active-link" class="nav-link">Acerca&nbsp;nosotros</a></li>
+      <li><a routerLink="/contacto"  routerLinkActive="active-link" class="nav-link">Contáctenos</a></li>
     </ul>
 
-    <!-- botón destacado (desktop) -->
-    <a
-      routerLink="/contacto"
-      class="hidden md:inline-flex bg-[#E5D2BC] hover:bg-[#D9C0A9] text-gray-800 font-medium py-2 px-6 rounded-full transition-colors"
-    >
-      Contáctenos
-    </a>
+    <!-- botones destacados (desktop) -->
+    <div class="hidden md:flex gap-4">
+      <a
+        routerLink="/identificarse"
+        class="inline-flex items-center bg-transparent border border-[#E5D2BC] text-gray-800 hover:bg-[#F6EEE3] font-medium py-2 px-6 rounded-full transition-colors"
+      >
+        <i class="fa-regular fa-user mr-2"></i> Identifícate
+      </a>
+      <a
+        routerLink="/contacto"
+        class="inline-flex items-center bg-[#E5D2BC] hover:bg-[#D9C0A9] text-gray-800 font-medium py-2 px-6 rounded-full transition-colors"
+      >
+        <i class="fa-solid fa-paper-plane mr-2"></i> Contáctenos
+      </a>
+    </div>
   </div>
 
-  <!-- menú móvil desplegable -->
+  <!-- menú móvil -->
   <ul
     *ngIf="menuOpen"
     class="md:hidden bg-white border-t border-gray-200 px-6 pb-4 space-y-3 font-medium"
   >
-    <li><a routerLink="/"        (click)="closeMenu()" routerLinkActive="active-link">Inicio</a></li>
-    <li><a routerLink="/catalogo" (click)="closeMenu()" routerLinkActive="active-link">Catálogo</a></li>
-    <li><a routerLink="/servicios"(click)="closeMenu()" routerLinkActive="active-link">Servicios</a></li>
-    <li><a routerLink="/precios"  (click)="closeMenu()" routerLinkActive="active-link">Precios</a></li>
-    <li><a routerLink="/acerca"   (click)="closeMenu()" routerLinkActive="active-link">Acerca nosotros</a></li>
+    <li><a routerLink="/"          (click)="closeMenu()" routerLinkActive="active-link">Inicio</a></li>
+    <li><a routerLink="/catalogo"   (click)="closeMenu()" routerLinkActive="active-link">Catálogo</a></li>
+    <li><a routerLink="/servicios"  (click)="closeMenu()" routerLinkActive="active-link">Servicios</a></li>
+    <li><a routerLink="/precios"    (click)="closeMenu()" routerLinkActive="active-link">Precios</a></li>
+    <li><a routerLink="/acerca"     (click)="closeMenu()" routerLinkActive="active-link">Acerca&nbsp;nosotros</a></li>
+    <li>
+      <a
+        routerLink="/identificarse"
+        (click)="closeMenu()"
+        class="inline-block bg-transparent border border-[#E5D2BC] text-gray-800 hover:bg-[#F6EEE3] py-2 px-5 rounded-full w-full text-center"
+      >
+        <i class="fa-regular fa-user mr-1"></i> Identifícate
+      </a>
+    </li>
     <li>
       <a
         routerLink="/contacto"
         (click)="closeMenu()"
         class="inline-block bg-[#E5D2BC] hover:bg-[#D9C0A9] text-gray-800 py-2 px-5 rounded-full w-full text-center"
       >
-        Contáctenos
+        <i class="fa-solid fa-paper-plane mr-1"></i> Contáctenos
       </a>
     </li>
   </ul>

@@ -1,1 +1,70 @@
-<p>footer works!</p>
+<footer class="bg-[#aa9079] text-gray-100">
+  <!-- bloque principal -->
+  <div
+    class="container mx-auto grid gap-10 px-6 py-12 md:grid-cols-3 lg:gap-16"
+  >
+    <!-- enlaces -->
+    <div>
+      <h3 class="mb-4 text-lg font-semibold tracking-wider text-white">
+        Enlaces de interés
+      </h3>
+      <ul class="space-y-2 text-sm">
+        <li><a routerLink="/"          class="hover:underline">Inicio</a></li>
+        <li><a routerLink="/acerca"    class="hover:underline">Acerca de</a></li>
+        <li><a routerLink="/catalogo"  class="hover:underline">Productos</a></li>
+        <li><a routerLink="/servicios" class="hover:underline">Servicios</a></li>
+        <li><a routerLink="/legal"     class="hover:underline">Aviso legal</a></li>
+        <li><a routerLink="/privacidad"class="hover:underline">Política de privacidad</a></li>
+        <li><a routerLink="/contacto"  class="hover:underline">Contáctenos</a></li>
+      </ul>
+    </div>
+
+    <!-- claim / descripción -->
+    <div>
+      <h3 class="mb-4 text-lg font-semibold tracking-wider text-white">
+        Trabajamos para endulzar tu vida
+      </h3>
+      <p class="text-sm leading-relaxed">
+        Horno Los Abuelos elabora repostería artesanal desde 2005 y distribuye
+        pasteles, tartas y helados gourmet a hostelería y particulares.
+        Adaptamos cada receta con cariño y profesionalidad para ofrecer la
+        máxima calidad desde nuestro obrador hasta tu mesa.
+      </p>
+    </div>
+
+    <!-- contacto -->
+    <div>
+      <h3 class="mb-4 text-lg font-semibold tracking-wider text-white">
+        Contacte con nosotros
+      </h3>
+      <ul class="space-y-2 text-sm">
+        <li class="flex items-start gap-2">
+          <i class="fa-solid fa-comments mt-0.5 text-base"></i>
+          <span>Contáctenos</span>
+        </li>
+        <li class="flex items-start gap-2">
+          <i class="fa-solid fa-envelope mt-0.5 text-base"></i>
+          <span>info&#64;hornolosabuelos.com</span>
+        </li>
+        <li class="flex items-start gap-2">
+          <i class="fa-solid fa-phone mt-0.5 text-base"></i>
+          <span>954&nbsp;140&nbsp;657</span>
+        </li>
+        <li class="flex items-start gap-2">
+          <i class="fa-solid fa-location-dot mt-0.5 text-base"></i>
+          <span>ADRIDAR HORNO 2005 S.&nbsp;L.</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- franja inferior -->
+  <div class="border-t border-[#d0c6bc]/30 bg-[#bea28a]">
+    <div
+      class="container mx-auto flex flex-col items-center justify-between gap-2 px-6 py-4 text-xs text-gray-200 md:flex-row"
+    >
+      <span>Copyright © Horno Los Abuelos {{ year }}.</span>
+      <span>Horno Los Abuelos · TFG Alixar</span>
+    </div>
+  </div>
+</footer>
