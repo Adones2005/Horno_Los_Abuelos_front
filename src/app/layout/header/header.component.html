@@ -15,21 +15,21 @@
 <!-- Navegación principal -->
 <nav class="sticky top-0 z-50 bg-white shadow-sm">
   <div class="container mx-auto flex items-center justify-between py-4">
-
     <!-- logo -->
     <a routerLink="/" class="flex items-center gap-2">
       <img src="assets/logo.png" alt="Horno Los Abuelos" class="w-10 h-10 rounded-full" />
     </a>
 
     <!-- botón hamburguesa (móvil) -->
-<button
-  (click)="toggleMenu()"
-  aria-label="Abrir menú"
-  class="md:hidden flex items-center justify-center w-10 h-10 mr-4 rounded-xl bg-white/80 backdrop-blur-md shadow-sm ring-1 ring-inset ring-gray-300 text-gray-600 hover:text-gray-900  hover:bg-white/90 active:bg-white transition focus:outline-none focus:ring-2 focus:ring-[#E5D2BC]"
->
-  <i class="fa-solid fa-bars text-lg"></i>
-</button>
-
+    <button
+      (click)="toggleMenu()"
+      aria-label="Abrir menú"
+      class="md:hidden flex items-center justify-center w-10 h-10 mr-4 rounded-xl
+             bg-white/80 backdrop-blur-md shadow-sm ring-1 ring-inset ring-gray-300
+             text-gray-600 hover:text-gray-900 hover:bg-white/90 active:bg-white
+             transition focus:outline-none focus:ring-2 focus:ring-[#E5D2BC]">
+      <i class="fa-solid fa-bars text-lg"></i>
+    </button>
 
     <!-- menú desktop -->
     <ul class="hidden md:flex items-center gap-8 font-medium">
@@ -39,52 +39,74 @@
       <li><a routerLink="/precios"   routerLinkActive="active-link" class="nav-link">Precios</a></li>
       <li><a routerLink="/acerca"    routerLinkActive="active-link" class="nav-link">Acerca&nbsp;nosotros</a></li>
       <li><a routerLink="/contacto"  routerLinkActive="active-link" class="nav-link">Contáctenos</a></li>
+
+      <!-- Panel de control (solo autenticado) -->
+      <li *ngIf="loggedIn$ | async">
+        <a routerLink="/control-panel" routerLinkActive="active-link" class="nav-link">Panel&nbsp;de&nbsp;control</a>
+      </li>
     </ul>
 
     <!-- botones destacados (desktop) -->
     <div class="hidden md:flex gap-4">
+      <!-- Identifícate y Contáctenos solo cuando NO hay sesión -->
+      <ng-container *ngIf="!(loggedIn$ | async)">
+        <a
+          routerLink="/identificarse"
+          class="inline-flex items-center bg-transparent border border-[#E5D2BC] text-gray-800
+                 hover:bg-[#F6EEE3] font-medium py-2 px-6 rounded-full transition-colors">
+          <i class="fa-regular fa-user mr-2"></i> Identifícate
+        </a>
+        <a
+          routerLink="/contacto"
+          class="inline-flex items-center bg-[#E5D2BC] hover:bg-[#D9C0A9] text-gray-800
+                 font-medium py-2 px-6 rounded-full transition-colors">
+          <i class="fa-solid fa-paper-plane mr-2"></i> Contáctenos
+        </a>
+      </ng-container>
+
+      <!-- Logout (solo autenticado) -->
       <a
-        routerLink="/identificarse"
-        class="inline-flex items-center bg-transparent border border-[#E5D2BC] text-gray-800 hover:bg-[#F6EEE3] font-medium py-2 px-6 rounded-full transition-colors"
-      >
-        <i class="fa-regular fa-user mr-2"></i> Identifícate
-      </a>
-      <a
-        routerLink="/contacto"
-        class="inline-flex items-center bg-[#E5D2BC] hover:bg-[#D9C0A9] text-gray-800 font-medium py-2 px-6 rounded-full transition-colors"
-      >
-        <i class="fa-solid fa-paper-plane mr-2"></i> Contáctenos
+        *ngIf="loggedIn$ | async"
+        (click)="logout()"
+        class="inline-flex items-center bg-transparent border border-red-400 text-red-600
+               hover:bg-red-50 font-medium py-2 px-6 rounded-full transition-colors cursor-pointer">
+        <i class="fa-solid fa-arrow-right-from-bracket mr-2"></i> Logout
       </a>
     </div>
   </div>
 
   <!-- menú móvil -->
-  <ul
-    *ngIf="menuOpen"
-    class="md:hidden bg-white border-t border-gray-200 px-6 pb-4 space-y-3 font-medium"
-  >
-    <li><a routerLink="/"          (click)="closeMenu()" routerLinkActive="active-link">Inicio</a></li>
-    <li><a routerLink="/catalogo"   (click)="closeMenu()" routerLinkActive="active-link">Catálogo</a></li>
-    <li><a routerLink="/servicios"  (click)="closeMenu()" routerLinkActive="active-link">Servicios</a></li>
-    <li><a routerLink="/precios"    (click)="closeMenu()" routerLinkActive="active-link">Precios</a></li>
-    <li><a routerLink="/acerca"     (click)="closeMenu()" routerLinkActive="active-link">Acerca&nbsp;nosotros</a></li>
-    <li>
-      <a
-        routerLink="/identificarse"
-        (click)="closeMenu()"
-        class="inline-block bg-transparent border border-[#E5D2BC] text-gray-800 hover:bg-[#F6EEE3] py-2 px-5 rounded-full w-full text-center"
-      >
+  <ul *ngIf="menuOpen" class="md:hidden bg-white border-t border-gray-200 px-6 pb-4 space-y-3 font-medium">
+    <li><a routerLink="/" (click)="closeMenu()" routerLinkActive="active-link">Inicio</a></li>
+    <li><a routerLink="/catalogo" (click)="closeMenu()" routerLinkActive="active-link">Catálogo</a></li>
+    <li><a routerLink="/servicios" (click)="closeMenu()" routerLinkActive="active-link">Servicios</a></li>
+    <li><a routerLink="/precios" (click)="closeMenu()" routerLinkActive="active-link">Precios</a></li>
+    <li><a routerLink="/acerca" (click)="closeMenu()" routerLinkActive="active-link">Acerca&nbsp;nosotros</a></li>
+
+    <!-- Panel de control solo autenticado -->
+    <li *ngIf="loggedIn$ | async">
+      <a routerLink="/control-panel" (click)="closeMenu()">Panel de control</a>
+    </li>
+
+    <!-- Identifícate/Contacto solo NO autenticado -->
+    <li *ngIf="!(loggedIn$ | async)">
+      <a routerLink="/identificarse" (click)="closeMenu()"
+         class="inline-block bg-transparent border border-[#E5D2BC] text-gray-800
+                hover:bg-[#F6EEE3] py-2 px-5 rounded-full w-full text-center">
         <i class="fa-regular fa-user mr-1"></i> Identifícate
       </a>
     </li>
-    <li>
-      <a
-        routerLink="/contacto"
-        (click)="closeMenu()"
-        class="inline-block bg-[#E5D2BC] hover:bg-[#D9C0A9] text-gray-800 py-2 px-5 rounded-full w-full text-center"
-      >
+    <li *ngIf="!(loggedIn$ | async)">
+      <a routerLink="/contacto" (click)="closeMenu()"
+         class="inline-block bg-[#E5D2BC] hover:bg-[#D9C0A9] text-gray-800
+                py-2 px-5 rounded-full w-full text-center">
         <i class="fa-solid fa-paper-plane mr-1"></i> Contáctenos
       </a>
+    </li>
+
+    <!-- Logout solo autenticado -->
+    <li *ngIf="loggedIn$ | async">
+      <a (click)="logout(); closeMenu()" class="text-red-600">Logout</a>
     </li>
   </ul>
 </nav>

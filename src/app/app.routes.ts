@@ -12,4 +12,21 @@ export const routes: Routes = [
         m => m.LoginComponent
       ),
   },
+   {
+    path: 'control-panel',
+    loadComponent: () =>
+      import('./pages/private/control-panel/control-panel.component').then(
+        m => m.ControlPanelComponent
+      ),
+    children: [
+      {
+        path: 'clientes',
+        loadComponent: () =>
+          import('./pages/private/clientes/clientes.component').then(
+            m => m.ClientesComponent
+          ),
+      },
+      { path: '', redirectTo: 'clientes', pathMatch: 'full' },
+    ],
+  },
 ];

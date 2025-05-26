@@ -1,0 +1,35 @@
+<section class="p-8">
+  <h2 class="mb-6 text-2xl font-semibold">Clientes</h2>
+
+  <!-- error -->
+  <div *ngIf="errorMsg" class="mb-4 rounded bg-red-100 p-4 text-red-700">
+    {{ errorMsg }}
+  </div>
+
+  <!-- tabla -->
+  <div class="overflow-x-auto">
+    <table class="min-w-full divide-y divide-gray-200 bg-white shadow-sm rounded-lg">
+      <thead class="bg-[#E5D2BC] text-left text-xs uppercase tracking-wider text-gray-800">
+        <tr>
+          <th class="px-4 py-3">ID</th>
+          <th class="px-4 py-3">Nombre</th>
+          <th class="px-4 py-3">Email</th>
+          <th class="px-4 py-3">Teléfono</th>
+          <th class="px-4 py-3 w-24">Acciones</th>
+        </tr>
+      </thead>
+      <tbody *ngIf="(clientes$ | async) as clientes" class="divide-y divide-gray-100">
+        <tr *ngFor="let c of clientes; let i = index" [class.bg-gray-50]="i % 2 === 0">
+          <td class="px-4 py-2">{{ c.id }}</td>
+          <td class="px-4 py-2">{{ c.nombre }}</td>
+          <td class="px-4 py-2">{{ c.email }}</td>
+          <td class="px-4 py-2">{{ c.telefono }}</td>
+          <td class="px-4 py-2">
+            <button class="text-sm text-blue-600 hover:underline">Editar</button>
+            <button class="ml-3 text-sm text-red-600 hover:underline">Borrar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>

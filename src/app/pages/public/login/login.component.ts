@@ -45,11 +45,12 @@ export class LoginComponent {
     const credentials = this.form.value as LoginCredentials;
 
     this.loginService
-      .login(credentials)
-      .pipe(finalize(() => (this.loading = false)))
-      .subscribe({
-        next: () => this.router.navigateByUrl('/'), // redirige al inicio o dashboard
-        error: (err) => (this.errorMsg = err.message),
-      });
+  .login(credentials)
+  .pipe(finalize(() => (this.loading = false)))
+  .subscribe({
+    next: () => this.router.navigateByUrl('/control-panel'),
+    error: err => (this.errorMsg = err.message),
+  });
+
   }
 }

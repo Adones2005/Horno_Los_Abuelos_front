@@ -1,12 +1,12 @@
+// src/app/pages/private/control-panel/control-panel.component.ts
 import { Component } from '@angular/core';
+import { RouterModule, RouterOutlet } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-control-panel',
   standalone: true,
-  imports: [],
+  imports: [CommonModule, RouterModule, RouterOutlet],
   templateUrl: './control-panel.component.html',
-  styleUrl: './control-panel.component.scss'
 })
-export class ControlPanelComponent {
-
-}
+export class ControlPanelComponent {}

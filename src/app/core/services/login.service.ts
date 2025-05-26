@@ -1,7 +1,8 @@
 // src/app/core/services/login.service.ts
-import { Injectable, inject } from '@angular/core';
+import { Injectable, inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Observable, catchError, map, throwError, tap } from 'rxjs';
+import { BehaviorSubject, Observable, throwError, tap, catchError } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
 export interface LoginCredentials {
@@ -10,46 +11,66 @@ export interface LoginCredentials {
 }
 
 export interface AuthResponse {
-  token: string;          // JWT
-  expiresIn: number;      // segundos
-  refreshToken?: string;  // opcional
+  token: string;         // JWT
+  expiresIn: number;     // segundos (opcional)
+  refreshToken?: string; // opcional
 }
 
 @Injectable({ providedIn: 'root' })
 export class LoginService {
-  private http = inject(HttpClient);
-  private apiUrl = environment.apiUrl ?? ''; 
+  private http       = inject(HttpClient);
+  private platformId = inject(PLATFORM_ID);
+  private apiUrl     = environment.apiUrl;      
 
-  /** Hace login y devuelve el JWT */
+  /* --- helpers para saber si estamos en el navegador --- */
+  private isBrowser(): boolean {
+    return isPlatformBrowser(this.platformId);
+  }
+
+  /* --- estado reactivo de autenticación --- */
+  private _loggedIn = new BehaviorSubject<boolean>(this.hasToken());
+  loggedIn$ = this._loggedIn.asObservable();
+
+  /* ---------- login ---------- */
   login(credentials: LoginCredentials): Observable<AuthResponse> {
     return this.http
       .post<AuthResponse>(`${this.apiUrl}/authenticate`, credentials)
       .pipe(
-        tap(res => this.storeToken(res)), // guarda el token en localStorage
+        tap(res => this.storeTokens(res)),
         catchError(this.handleError)
       );
   }
 
-  /** Guarda token (y refresh token) de forma sencilla en localStorage */
-  private storeToken({ token, refreshToken }: AuthResponse): void {
-    localStorage.setItem('token', token);
-    if (refreshToken) {
-      localStorage.setItem('refreshToken', refreshToken);
-    }
-  }
-
-  /** Devuelve el token si existe */
-  get token(): string | null {
-    return localStorage.getItem('token');
-  }
-
-  /** Elimina credenciales (logout) */
+  /* ---------- logout ---------- */
   logout(): void {
-    localStorage.removeItem('token');
-    localStorage.removeItem('refreshToken');
+    if (this.isBrowser()) {
+      localStorage.removeItem('token');
+      localStorage.removeItem('refreshToken');
+    }
+    this._loggedIn.next(false);
   }
 
-  /** Manejo simple de errores */
+  /* ---------- helpers ---------- */
+
+  private storeTokens({ token, refreshToken }: AuthResponse): void {
+    if (this.isBrowser()) {
+      localStorage.setItem('token', token);
+      if (refreshToken) {
+        localStorage.setItem('refreshToken', refreshToken);
+      }
+    }
+    this._loggedIn.next(true);
+  }
+
+  private hasToken(): boolean {
+    return this.isBrowser() && !!localStorage.getItem('token');
+  }
+
+  /** Acceso directo al JWT (solo en navegador) */
+  get token(): string | null {
+    return this.isBrowser() ? localStorage.getItem('token') : null;
+  }
+
   private handleError(error: HttpErrorResponse) {
     const msg =
       error.status === 0
