@@ -1,0 +1,77 @@
+<section class="p-4 sm:p-6 lg:p-8 xl:p-10">
+  <!-- Encabezado + volver -->
+  <div class="mb-6 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+    <h2 class="text-2xl font-semibold">Usuarios pendientes de aprobación</h2>
+
+    <button
+      (click)="volver()"
+      class="rounded-full bg-[#E5D2BC] px-4 py-2 text-sm font-medium text-gray-800 transition hover:bg-[#d9c0a9]"
+    >
+      Volver a empleados
+    </button>
+  </div>
+
+  <!-- Error -->
+  <p *ngIf="errorMsg" class="mb-4 rounded bg-red-100 p-4 text-red-700">
+    {{ errorMsg }}
+  </p>
+
+  <!-- Grid responsivo -->
+  <div
+    *ngIf="empleados$ | async as empleados"
+    class="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5"
+  >
+    <!-- Tarjeta -->
+    <div
+      *ngFor="let e of empleados"
+      class="grid w-full max-w-sm gap-4 rounded-2xl bg-white p-6 shadow-sm transition hover:shadow-md sm:max-w-none"
+    >
+      <!-- Fila 1: avatar + datos -->
+      <div class="grid grid-cols-[auto,1fr] items-center gap-4">
+        <!-- avatar -->
+        <img
+          src="assets/default-user.png"
+          alt="avatar"
+          class="h-20 w-20 rounded-full object-cover shadow-md sm:h-24 sm:w-24 lg:h-20 lg:w-20"
+        />
+
+        <!-- datos -->
+        <div>
+          <h3 class="break-words text-lg font-semibold text-gray-800">
+            {{ e.nombre }}
+          </h3>
+          <p class="break-all text-sm text-gray-500">{{ e.email }}</p>
+
+          <span
+            class="mt-1 inline-block rounded-full bg-[#B9A99B]/20 px-3 py-0.5 text-xs uppercase tracking-wide text-[#5d554e]"
+          >
+            {{
+              e.rolId === 1
+                ? 'Comercial'
+                : e.rolId === 2
+                ? 'Gestor'
+                : 'Repartidor'
+            }}
+          </span>
+        </div>
+      </div>
+
+      <!-- Fila 2: botones verticales -->
+      <div class="flex flex-col gap-2">
+        <button
+          (click)="aceptar(e)"
+          class="w-full rounded-full bg-green-50 px-4 py-1.5 text-sm font-medium text-green-700 transition hover:bg-green-100"
+        >
+          Aceptar
+        </button>
+
+        <button
+          (click)="rechazar(e)"
+          class="w-full rounded-full bg-red-50 px-4 py-1.5 text-sm font-medium text-red-600 transition hover:bg-red-100"
+        >
+          Rechazar
+        </button>
+      </div>
+    </div>
+  </div>
+</section>

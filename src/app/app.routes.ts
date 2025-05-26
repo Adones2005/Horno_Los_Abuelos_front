@@ -4,7 +4,6 @@ import { Routes } from '@angular/router';
 export const routes: Routes = [
 
 
-  /* --------  Ruta para “Identifícate” (login)  -------- */
   {
     path: 'identificarse',         
     loadComponent: () =>
@@ -12,6 +11,14 @@ export const routes: Routes = [
         m => m.LoginComponent
       ),
   },
+  {
+    path: 'registrar',
+    loadComponent: () =>
+      import('./pages/public/registrar/registrar.component').then(
+        m => m.RegistrarComponent
+      ),
+  },
+
    {
     path: 'control-panel',
     loadComponent: () =>
@@ -27,6 +34,18 @@ export const routes: Routes = [
           ),
       },
       { path: '', redirectTo: 'clientes', pathMatch: 'full' },
+      {
+        path: 'empleados',
+        loadComponent: () =>
+          import('./pages/private/empleados/empleados.component')
+            .then(m => m.EmpleadosComponent),
+      },
+      {
+        path: 'aceptar-usuarios',
+        loadComponent: () =>
+          import('./pages/private/aceptar-usuarios/aceptar-usuarios.component')
+            .then(m => m.AceptarUsuariosComponent),
+      },
     ],
   },
 ];

@@ -1,7 +1,8 @@
 // src/app/pages/private/control-panel/control-panel.component.ts
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterModule, RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { LoginService } from '../../../core/services/login.service';
 
 @Component({
   selector: 'app-control-panel',
@@ -9,4 +10,15 @@ import { CommonModule } from '@angular/common';
   imports: [CommonModule, RouterModule, RouterOutlet],
   templateUrl: './control-panel.component.html',
 })
-export class ControlPanelComponent {}
+export class ControlPanelComponent {
+
+    private loginSvc = inject(LoginService);
+
+    
+    role$ = this.loginSvc.role$;           
+
+
+
+
+
+}
