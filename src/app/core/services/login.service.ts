@@ -11,25 +11,39 @@ export interface LoginCredentials {
 }
 
 export interface AuthResponse {
-  token: string;         // JWT
-  expiresIn: number;     // segundos (opcional)
-  refreshToken?: string; // opcional
+  token: string;
+  expiresIn: number;
+  refreshToken?: string;
 }
 
 @Injectable({ providedIn: 'root' })
 export class LoginService {
   private http       = inject(HttpClient);
   private platformId = inject(PLATFORM_ID);
-  private apiUrl     = environment.apiUrl;      
+  private apiUrl     = environment.apiUrl;
 
-  /* --- helpers para saber si estamos en el navegador --- */
+  /* ---------- helpers ---------- */
   private isBrowser(): boolean {
     return isPlatformBrowser(this.platformId);
   }
 
-  /* --- estado reactivo de autenticación --- */
+  private decodeRole(token: string): string | null {
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      // tu backend pone roles=["ROLE_gestor"], coge el primero sin el prefijo
+      const raw = Array.isArray(payload.roles) ? payload.roles[0] : payload.roles;
+      return raw ? raw.replace(/^ROLE_/i, '').toLowerCase() : null;
+    } catch {
+      return null;
+    }
+  }
+
+  /* ---------- estado reactivo ---------- */
   private _loggedIn = new BehaviorSubject<boolean>(this.hasToken());
   loggedIn$ = this._loggedIn.asObservable();
+
+  private _role = new BehaviorSubject<string | null>(this.initialRole());
+  role$ = this._role.asObservable();
 
   /* ---------- login ---------- */
   login(credentials: LoginCredentials): Observable<AuthResponse> {
@@ -48,16 +62,15 @@ export class LoginService {
       localStorage.removeItem('refreshToken');
     }
     this._loggedIn.next(false);
+    this._role.next(null);
   }
 
   /* ---------- helpers ---------- */
-
   private storeTokens({ token, refreshToken }: AuthResponse): void {
     if (this.isBrowser()) {
       localStorage.setItem('token', token);
-      if (refreshToken) {
-        localStorage.setItem('refreshToken', refreshToken);
-      }
+      if (refreshToken) localStorage.setItem('refreshToken', refreshToken);
+      this._role.next(this.decodeRole(token));
     }
     this._loggedIn.next(true);
   }
@@ -66,16 +79,21 @@ export class LoginService {
     return this.isBrowser() && !!localStorage.getItem('token');
   }
 
-  /** Acceso directo al JWT (solo en navegador) */
+  private initialRole(): string | null {
+    if (!this.isBrowser()) return null;
+    const stored = localStorage.getItem('token');
+    return stored ? this.decodeRole(stored) : null;
+  }
+
+  /** acceso directo */
   get token(): string | null {
     return this.isBrowser() ? localStorage.getItem('token') : null;
   }
 
   private handleError(error: HttpErrorResponse) {
-    const msg =
-      error.status === 0
-        ? 'No se pudo conectar con el servidor.'
-        : error.error?.message ?? 'Credenciales inválidas';
+    const msg = error.status === 0
+      ? 'No se pudo conectar con el servidor.'
+      : error.error?.message ?? 'Credenciales inválidas';
     return throwError(() => new Error(msg));
   }
 }
