@@ -6,6 +6,7 @@ import {
 } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { PageTitleComponent } from '../../shared/page-title/page-title.component';
 import { finalize } from 'rxjs/operators';
 
 import {
@@ -16,7 +17,7 @@ import {
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule, PageTitleComponent],
   templateUrl: './login.component.html',
 })
 export class LoginComponent {

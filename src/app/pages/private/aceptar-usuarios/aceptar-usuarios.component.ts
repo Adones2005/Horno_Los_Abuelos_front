@@ -1,5 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { AsyncPipe, NgFor, NgIf } from '@angular/common';
+import { PageTitleComponent } from '../../shared/page-title/page-title.component';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
 import { EmpleadosService, Empleado } from '../../../core/services/empleados.service';
@@ -9,7 +10,7 @@ import { catchError, of, tap } from 'rxjs';
   standalone: true,
   selector: 'app-aceptar-usuarios',
   templateUrl: './aceptar-usuarios.component.html',
-  imports: [NgIf, NgFor, AsyncPipe],
+  imports: [NgIf, NgFor, AsyncPipe, PageTitleComponent],
 })
 export class AceptarUsuariosComponent implements OnInit {
   private empSvc = inject(EmpleadosService);

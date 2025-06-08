@@ -1,6 +1,7 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
+import { PageTitleComponent } from '../../../shared/page-title/page-title.component';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { ClientesService, Cliente } from '../../../../core/services/cliente.service';
 import { finalize } from 'rxjs';
@@ -8,7 +9,7 @@ import { finalize } from 'rxjs';
 @Component({
   selector: 'app-cliente-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule, PageTitleComponent],
   templateUrl: './cliente-form.component.html',
 })
 export class ClienteFormComponent implements OnInit {
