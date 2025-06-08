@@ -61,70 +61,56 @@
            class="mt-1 text-xs text-red-500">Mínimo 8 caracteres.</p>
       </div>
 
-        <div>
-        <label class="mb-2 inline-block text-sm font-medium text-gray-700">Rol</label>
+        <!-- ======= Rol (solo Comercial y Repartidor) ======= -->
+<div>
+  <label class="mb-2 inline-block text-sm font-medium text-gray-700">Rol</label>
 
-        <div class="grid gap-2 sm:grid-cols-3">
-            <!-- Comercial -->
-            <label class="cursor-pointer">
-            <input
-                type="radio"
-                formControlName="rolId"
-                [value]="1"
-                class="peer sr-only"
-            />
-            <div
-                class="flex flex-col items-center rounded-lg border border-gray-300
-                    bg-white p-3 text-sm transition
-                    peer-checked:border-[#E5D2BC] peer-checked:bg-[#F7F3EF]"
-            >
-                <i class="fa-solid fa-handshake-angle text-xl mb-1"></i>
-                Comercial
-            </div>
-            </label>
+  <div class="grid gap-2 sm:grid-cols-2">
+    <!-- Comercial -->
+    <label class="cursor-pointer">
+      <input
+        type="radio"
+        formControlName="rolId"
+        [value]="1"
+        class="peer sr-only"
+      />
+      <div
+        class="flex flex-col items-center rounded-lg border border-gray-300
+               bg-white p-3 text-sm transition
+               peer-checked:border-[#E5D2BC] peer-checked:bg-[#F7F3EF]"
+      >
+        <i class="fa-solid fa-handshake-angle text-xl mb-1"></i>
+        Comercial
+      </div>
+    </label>
 
-            <!-- Gestor -->
-            <label class="cursor-pointer">
-            <input
-                type="radio"
-                formControlName="rolId"
-                [value]="2"
-                class="peer sr-only"
-            />
-            <div
-                class="flex flex-col items-center rounded-lg border border-gray-300
-                    bg-white p-3 text-sm transition
-                    peer-checked:border-[#E5D2BC] peer-checked:bg-[#F7F3EF]"
-            >
-                <i class="fa-solid fa-user-tie text-xl mb-1"></i>
-                Gestor
-            </div>
-            </label>
+    <!-- Repartidor -->
+    <label class="cursor-pointer">
+      <input
+        type="radio"
+        formControlName="rolId"
+        [value]="3"
+        class="peer sr-only"
+      />
+      <div
+        class="flex flex-col items-center rounded-lg border border-gray-300
+               bg-white p-3 text-sm transition
+               peer-checked:border-[#E5D2BC] peer-checked:bg-[#F7F3EF]"
+      >
+        <i class="fa-solid fa-truck-fast text-xl mb-1"></i>
+        Repartidor
+      </div>
+    </label>
+  </div>
 
-            <!-- Repartidor -->
-            <label class="cursor-pointer">
-            <input
-                type="radio"
-                formControlName="rolId"
-                [value]="3"
-                class="peer sr-only"
-            />
-            <div
-                class="flex flex-col items-center rounded-lg border border-gray-300
-                    bg-white p-3 text-sm transition
-                    peer-checked:border-[#E5D2BC] peer-checked:bg-[#F7F3EF]"
-            >
-                <i class="fa-solid fa-truck-fast text-xl mb-1"></i>
-                Repartidor
-            </div>
-            </label>
-        </div>
+  <p
+    *ngIf="form.get('rolId')?.invalid && form.get('rolId')?.touched"
+    class="mt-1 text-xs text-red-500"
+  >
+    Selecciona un rol.
+  </p>
+</div>
 
-        <p *ngIf="form.get('rolId')?.invalid && form.get('rolId')?.touched"
-            class="mt-1 text-xs text-red-500">
-            Selecciona un rol.
-        </p>
-        </div>
 
 
 

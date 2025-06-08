@@ -18,6 +18,14 @@ export const routes: Routes = [
         m => m.RegistrarComponent
       ),
   },
+  {
+  path: 'catalogo',
+  loadComponent: () =>
+    import('./pages/public/catalogo/catalogo.component').then(
+      m => m.CatalogoComponent
+    ),
+},
+
 
    {
     path: 'control-panel',

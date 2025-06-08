@@ -12,7 +12,7 @@ export interface LoginCredentials {
 
 export interface AuthResponse {
   token: string;
-  expiresIn: number;
+  expiresIn: number;       // (segundos) opcional, pero lo trae tu backend
   refreshToken?: string;
 }
 
@@ -22,30 +22,39 @@ export class LoginService {
   private platformId = inject(PLATFORM_ID);
   private apiUrl     = environment.apiUrl;
 
-  /* ---------- helpers ---------- */
+  /* ——— helpers ——— */
   private isBrowser(): boolean {
     return isPlatformBrowser(this.platformId);
   }
 
-  private decodeRole(token: string): string | null {
+  private decodePayload(token: string): any | null {
     try {
-      const payload = JSON.parse(atob(token.split('.')[1]));
-      // tu backend pone roles=["ROLE_gestor"], coge el primero sin el prefijo
-      const raw = Array.isArray(payload.roles) ? payload.roles[0] : payload.roles;
-      return raw ? raw.replace(/^ROLE_/i, '').toLowerCase() : null;
-    } catch {
-      return null;
-    }
+      return JSON.parse(atob(token.split('.')[1]));
+    } catch { return null; }
   }
 
-  /* ---------- estado reactivo ---------- */
-  private _loggedIn = new BehaviorSubject<boolean>(this.hasToken());
+  private decodeRole(token: string): string | null {
+    const p = this.decodePayload(token);
+    if (!p || !p.roles) return null;
+    const raw = Array.isArray(p.roles) ? p.roles[0] : p.roles;
+    return raw ? raw.replace(/^ROLE_/i, '').toLowerCase() : null;
+  }
+
+  private isExpired(token: string): boolean {
+    const p = this.decodePayload(token);
+    return !p || (p.exp ?? 0) * 1000 <= Date.now();
+  }
+
+  /* ——— estado reactivo ——— */
+  private _loggedIn = new BehaviorSubject<boolean>(this.hasValidToken());
   loggedIn$ = this._loggedIn.asObservable();
 
   private _role = new BehaviorSubject<string | null>(this.initialRole());
   role$ = this._role.asObservable();
 
-  /* ---------- login ---------- */
+  private logoutTimer: any;  // NodeJS.Timeout | number
+
+  /* ——— login ——— */
   login(credentials: LoginCredentials): Observable<AuthResponse> {
     return this.http
       .post<AuthResponse>(`${this.apiUrl}/authenticate`, credentials)
@@ -55,8 +64,9 @@ export class LoginService {
       );
   }
 
-  /* ---------- logout ---------- */
+  /* ——— logout ——— */
   logout(): void {
+    if (this.logoutTimer) clearTimeout(this.logoutTimer);
     if (this.isBrowser()) {
       localStorage.removeItem('token');
       localStorage.removeItem('refreshToken');
@@ -65,35 +75,56 @@ export class LoginService {
     this._role.next(null);
   }
 
-  /* ---------- helpers ---------- */
+  /* ——— helpers internos ——— */
   private storeTokens({ token, refreshToken }: AuthResponse): void {
     if (this.isBrowser()) {
       localStorage.setItem('token', token);
       if (refreshToken) localStorage.setItem('refreshToken', refreshToken);
+
+      /* programa auto-logout */
+      const p = this.decodePayload(token);
+      if (p?.exp) {
+        const ms = p.exp * 1000 - Date.now();
+        if (ms > 0) {
+          if (this.logoutTimer) clearTimeout(this.logoutTimer);
+          this.logoutTimer = setTimeout(() => this.logout(), ms);
+        }
+      }
+
       this._role.next(this.decodeRole(token));
     }
     this._loggedIn.next(true);
   }
 
-  private hasToken(): boolean {
-    return this.isBrowser() && !!localStorage.getItem('token');
+  /** true si hay token Y no está expirado */
+  private hasValidToken(): boolean {
+    if (!this.isBrowser()) return false;
+    const tok = localStorage.getItem('token');
+    if (!tok || this.isExpired(tok)) {
+      if (tok) this.logout();          // token caducado → limpiar sesión
+      return false;
+    }
+    return true;
   }
 
   private initialRole(): string | null {
     if (!this.isBrowser()) return null;
-    const stored = localStorage.getItem('token');
-    return stored ? this.decodeRole(stored) : null;
+    const tok = localStorage.getItem('token');
+    return tok && !this.isExpired(tok) ? this.decodeRole(tok) : null;
   }
 
-  /** acceso directo */
+  /* ——— acceso directo al JWT ——— */
   get token(): string | null {
-    return this.isBrowser() ? localStorage.getItem('token') : null;
+    return this.isBrowser() && !this.isExpired(localStorage.getItem('token') || '')
+      ? localStorage.getItem('token')
+      : null;
   }
 
   private handleError(error: HttpErrorResponse) {
-    const msg = error.status === 0
-      ? 'No se pudo conectar con el servidor.'
-      : error.error?.message ?? 'Credenciales inválidas';
+    const msg =
+      error.status === 0
+        ? 'No se pudo conectar con el servidor.'
+        : error.error?.message ?? 'Credenciales inválidas';
     return throwError(() => new Error(msg));
   }
 }
