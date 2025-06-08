@@ -1,11 +1,11 @@
-// src/app/routes.ts
 import { Routes } from '@angular/router';
 
 export const routes: Routes = [
+  { path: '', redirectTo: 'identificarse', pathMatch: 'full' },
 
-
+  /* ─────── Públicas ─────── */
   {
-    path: 'identificarse',         
+    path: 'identificarse',
     loadComponent: () =>
       import('./pages/public/login/login.component').then(
         m => m.LoginComponent
@@ -19,15 +19,22 @@ export const routes: Routes = [
       ),
   },
   {
-  path: 'catalogo',
-  loadComponent: () =>
-    import('./pages/public/catalogo/catalogo.component').then(
-      m => m.CatalogoComponent
-    ),
-},
+    path: 'catalogo',
+    loadComponent: () =>
+      import('./pages/public/catalogo/catalogo.component').then(
+        m => m.CatalogoComponent
+      ),
+  },
+  {
+    path: 'contacto',
+    loadComponent: () =>
+      import('./pages/public/contact/contact.component').then(
+        m => m.ContactComponent
+      ),
+  },
 
-
-   {
+  /* ─────── Privadas (PANEL) ─────── */
+  {
     path: 'control-panel',
     loadComponent: () =>
       import('./pages/private/control-panel/control-panel.component').then(
@@ -41,19 +48,21 @@ export const routes: Routes = [
             m => m.ClientesComponent
           ),
       },
-      { path: '', redirectTo: 'clientes', pathMatch: 'full' },
       {
         path: 'empleados',
         loadComponent: () =>
-          import('./pages/private/empleados/empleados.component')
-            .then(m => m.EmpleadosComponent),
+          import('./pages/private/empleados/empleados.component').then(
+            m => m.EmpleadosComponent
+          ),
       },
       {
         path: 'aceptar-usuarios',
         loadComponent: () =>
-          import('./pages/private/aceptar-usuarios/aceptar-usuarios.component')
-            .then(m => m.AceptarUsuariosComponent),
+          import('./pages/private/aceptar-usuarios/aceptar-usuarios.component').then(
+            m => m.AceptarUsuariosComponent
+          ),
       },
+      { path: '', redirectTo: 'clientes', pathMatch: 'full' },
     ],
   },
 ];

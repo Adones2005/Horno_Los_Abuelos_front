@@ -1,1 +1,41 @@
-<p>contact works!</p>
+<div class="min-h-screen flex items-center justify-center">
+  <div class="mx-4 w-full max-w-lg rounded-2xl bg-white/90 backdrop-blur-sm shadow-lg">
+    <header class="rounded-t-2xl bg-[#B9A99B] px-8 py-6 text-center text-white">
+      <h1 class="text-2xl font-semibold tracking-wide">Contacto</h1>
+    </header>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="space-y-6 px-8 py-8" novalidate>
+      <!-- Nombre -->
+      <div>
+        <label class="mb-2 inline-block text-sm font-medium text-gray-700">Nombre</label>
+        <input type="text" formControlName="name" class="w-full rounded-lg border border-gray-300 bg-white py-2 px-3 text-sm focus:border-[#E5D2BC] focus:outline-none focus:ring-2 focus:ring-[#E5D2BC]" />
+        <p *ngIf="form.get('name')?.invalid && form.get('name')?.touched" class="mt-1 text-xs text-red-500">Campo obligatorio.</p>
+      </div>
+
+      <!-- Email -->
+      <div>
+        <label class="mb-2 inline-block text-sm font-medium text-gray-700">Email</label>
+        <input type="email" formControlName="email" class="w-full rounded-lg border border-gray-300 bg-white py-2 px-3 text-sm focus:border-[#E5D2BC] focus:outline-none focus:ring-2 focus:ring-[#E5D2BC]" />
+        <p *ngIf="form.get('email')?.invalid && form.get('email')?.touched" class="mt-1 text-xs text-red-500">Introduce un email válido.</p>
+      </div>
+
+      <!-- Mensaje -->
+      <div>
+        <label class="mb-2 inline-block text-sm font-medium text-gray-700">Mensaje</label>
+        <textarea formControlName="message" rows="4" class="w-full rounded-lg border border-gray-300 bg-white py-2 px-3 text-sm focus:border-[#E5D2BC] focus:outline-none focus:ring-2 focus:ring-[#E5D2BC]"></textarea>
+        <p *ngIf="form.get('message')?.invalid && form.get('message')?.touched" class="mt-1 text-xs text-red-500">Escribe tu mensaje.</p>
+      </div>
+
+      <p *ngIf="errorMsg" class="text-sm text-red-600">{{ errorMsg }}</p>
+      <p *ngIf="success" class="text-sm text-green-600">Mensaje enviado.</p>
+
+      <button type="submit" [disabled]="loading" class="inline-flex w-full items-center justify-center gap-2 rounded-full bg-[#E5D2BC] py-2 font-medium text-gray-800 transition hover:bg-[#d9c0a9] disabled:cursor-not-allowed disabled:opacity-50">
+        <i class="fa-solid fa-paper-plane" *ngIf="!loading"></i>
+        <svg *ngIf="loading" class="h-5 w-5 animate-spin" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
+        </svg>
+        <span>{{ loading ? 'Enviando…' : 'Enviar' }}</span>
+      </button>
+    </form>
+  </div>
+</div>
