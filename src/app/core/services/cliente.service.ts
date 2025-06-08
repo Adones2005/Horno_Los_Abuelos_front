@@ -14,11 +14,31 @@ export interface Cliente {
 @Injectable({ providedIn: 'root' })
 export class ClientesService {
   private http   = inject(HttpClient);
-  private apiUrl = environment.apiUrl;           
+  private apiUrl = environment.apiUrl;
 
   /** GET /clientes */
   getAll(): Observable<Cliente[]> {
     return this.http.get<Cliente[]>(`${this.apiUrl}/clientes`);
+  }
+
+  /** GET /clientes/{id} */
+  getById(id: number): Observable<Cliente> {
+    return this.http.get<Cliente>(`${this.apiUrl}/clientes/${id}`);
+  }
+
+  /** POST /clientes */
+  create(dto: Cliente) {
+    return this.http.post(`${this.apiUrl}/clientes`, dto);
+  }
+
+  /** PUT /clientes/{id} */
+  update(id: number, dto: Cliente) {
+    return this.http.put(`${this.apiUrl}/clientes/${id}`, dto);
+  }
+
+  /** DELETE /clientes/{id} */
+  delete(id: number) {
+    return this.http.delete(`${this.apiUrl}/clientes/${id}`);
   }
 
 

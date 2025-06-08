@@ -49,6 +49,20 @@ export const routes: Routes = [
           ),
       },
       {
+        path: 'clientes/nuevo',
+        loadComponent: () =>
+          import('./pages/private/clientes/form/cliente-form.component').then(
+            m => m.ClienteFormComponent
+          ),
+      },
+      {
+        path: 'clientes/:id',
+        loadComponent: () =>
+          import('./pages/private/clientes/form/cliente-form.component').then(
+            m => m.ClienteFormComponent
+          ),
+      },
+      {
         path: 'empleados',
         loadComponent: () =>
           import('./pages/private/empleados/empleados.component').then(
