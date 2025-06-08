@@ -1,13 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { AsyncPipe, CurrencyPipe, NgFor, NgIf } from '@angular/common';
-import { of } from 'rxjs';
+import { catchError, of } from 'rxjs';
+import { PastelesService, Pastel } from '../../../core/services/pasteles.service';
 
-export interface PastelMock {
-  id:     number;
-  nombre: string;
-  precio: number;
-  imagen: string;
-}
 
 @Component({
   standalone: true,
@@ -15,5 +10,22 @@ export interface PastelMock {
   templateUrl: './catalogo.component.html',
   imports: [NgIf, NgFor, AsyncPipe, CurrencyPipe],
 })
-export class CatalogoComponent{
+export class CatalogoComponent implements OnInit {
+  private pastelSvc = inject(PastelesService);
+
+  pasteles$ = of<Pastel[]>([]);
+  errorMsg = '';
+
+  ngOnInit(): void {
+    this.load();
+  }
+
+  load(): void {
+    this.pasteles$ = this.pastelSvc.getAll().pipe(
+      catchError(err => {
+        this.errorMsg = err.message ?? 'Error al cargar pasteles';
+        return of([]);
+      })
+    );
+  }
 }
