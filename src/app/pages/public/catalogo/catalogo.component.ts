@@ -2,6 +2,7 @@ import { Component, OnInit, inject } from '@angular/core';
 import { AsyncPipe, CurrencyPipe, NgFor, NgIf } from '@angular/common';
 import { catchError, of } from 'rxjs';
 import { PastelesService, Pastel } from '../../../core/services/pasteles.service';
+import { environment } from '../../../../environments/environment';
 
 
 @Component({
@@ -13,6 +14,7 @@ import { PastelesService, Pastel } from '../../../core/services/pasteles.service
 export class CatalogoComponent implements OnInit {
   private pastelSvc = inject(PastelesService);
 
+  readonly apiUrl = environment.apiUrl;
   pasteles$ = of<Pastel[]>([]);
   errorMsg = '';
 

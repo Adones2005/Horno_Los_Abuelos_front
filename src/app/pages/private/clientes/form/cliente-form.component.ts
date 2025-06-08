@@ -2,7 +2,7 @@ import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { ClientesService, Cliente } from '../../../core/services/cliente.service';
+import { ClientesService, Cliente } from '../../../../core/services/cliente.service';
 import { finalize } from 'rxjs';
 
 @Component({

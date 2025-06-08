@@ -6,7 +6,7 @@
     <ng-container *ngIf="pasteles$ | async as pasteles">
       <div *ngFor="let p of pasteles" class="group flex flex-col overflow-hidden rounded-2xl bg-white shadow-sm transition hover:shadow-lg">
         <div class="relative h-40 bg-[#faf7f5] overflow-hidden">
-          <img [src]="p.imagen" [alt]="p.nombre" class="h-full w-full object-contain transition duration-300 ease-out group-hover:scale-105" />
+          <img [src]="apiUrl + '/images/' + p.imagen" [alt]="p.nombre" class="h-full w-full object-contain transition duration-300 ease-out group-hover:scale-105" />
         </div>
         <div class="flex-1 p-4 text-center">
           <h3 class="mb-2 break-words text-base font-medium text-gray-800">{{ p.nombre }}</h3>
