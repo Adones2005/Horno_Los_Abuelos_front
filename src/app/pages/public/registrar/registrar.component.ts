@@ -2,6 +2,7 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
+import { PageTitleComponent } from '../../shared/page-title/page-title.component';
 import { Router, RouterModule } from '@angular/router';
 import { EmpleadosService, Empleado } from '../../../core/services/empleados.service';
 import { finalize } from 'rxjs';
@@ -9,7 +10,7 @@ import { finalize } from 'rxjs';
 @Component({
   selector: 'app-registrar',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule, PageTitleComponent],
   templateUrl: './registrar.component.html',
 })
 export class RegistrarComponent {

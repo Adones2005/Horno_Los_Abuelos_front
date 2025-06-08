@@ -1,5 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { AsyncPipe, NgFor, NgIf } from '@angular/common';
+import { PageTitleComponent } from '../../shared/page-title/page-title.component';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { EmpleadosService, Empleado } from '../../../core/services/empleados.service';
@@ -9,7 +10,7 @@ import { catchError, of } from 'rxjs';
   standalone: true,
   selector: 'app-empleados',
   templateUrl: './empleados.component.html',
-  imports: [NgIf, NgFor, AsyncPipe],
+  imports: [NgIf, NgFor, AsyncPipe, PageTitleComponent],
 })
 export class EmpleadosComponent implements OnInit {
   private empSvc = inject(EmpleadosService);
