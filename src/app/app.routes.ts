@@ -2,8 +2,7 @@
 import { Routes } from '@angular/router';
 
 export const routes: Routes = [
-
-
+  { path: '', redirectTo: 'identificarse', pathMatch: 'full' },
   {
     path: 'identificarse',         
     loadComponent: () =>
@@ -16,6 +15,13 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./pages/public/registrar/registrar.component').then(
         m => m.RegistrarComponent
+      ),
+  },
+  {
+    path: 'contacto',
+    loadComponent: () =>
+      import('./pages/public/contact/contact.component').then(
+        m => m.ContactComponent
       ),
   },
 
