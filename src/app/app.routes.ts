@@ -63,6 +63,27 @@ export const routes: Routes = [
           ),
       },
       {
+        path: 'catalogo',
+        loadComponent: () =>
+          import('./pages/private/catalogo/catalogo.component').then(
+            m => m.CatalogoComponent
+          ),
+      },
+      {
+        path: 'catalogo/nuevo',
+        loadComponent: () =>
+          import('./pages/private/catalogo/form/pastel-form.component').then(
+            m => m.PastelFormComponent
+          ),
+      },
+      {
+        path: 'catalogo/:id',
+        loadComponent: () =>
+          import('./pages/private/catalogo/form/pastel-form.component').then(
+            m => m.PastelFormComponent
+          ),
+      },
+      {
         path: 'empleados',
         loadComponent: () =>
           import('./pages/private/empleados/empleados.component').then(
