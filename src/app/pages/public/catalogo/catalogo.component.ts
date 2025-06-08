@@ -1,6 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { AsyncPipe, CurrencyPipe, NgFor, NgIf } from '@angular/common';
-import { PageTitleComponent } from '../../shared/page-title/page-title.component';
+import { PageTitleComponent } from '../../../shared/page-title/page-title.component';
 import { catchError, of } from 'rxjs';
 import { PastelesService, Pastel } from '../../../core/services/pasteles.service';
 import { environment } from '../../../../environments/environment';

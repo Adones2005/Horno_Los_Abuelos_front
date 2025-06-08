@@ -2,7 +2,7 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
-import { PageTitleComponent } from '../../shared/page-title/page-title.component';
+import { PageTitleComponent } from '../../../shared/page-title/page-title.component';
 import { Router, RouterModule } from '@angular/router';
 import { EmpleadosService, Empleado } from '../../../core/services/empleados.service';
 import { finalize } from 'rxjs';
