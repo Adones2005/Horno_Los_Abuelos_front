@@ -1,1 +1,107 @@
-<p>form-catalogo works!</p>
+<!-- margen alto para que no “pegue” al header sticky -->
+<section
+  class="relative z-10 mt-20 max-w-5xl mx-auto p-6 sm:p-8 lg:p-10
+         bg-white/90 backdrop-blur-sm shadow-xl rounded-3xl">
+
+  <a routerLink="../"
+     class="mb-6 inline-block text-sm text-[#5d554e] hover:underline">
+    ← Volver al catálogo
+  </a>
+
+  <h1 class="mb-8 text-2xl font-semibold">
+    {{ form.get('id')?.value ? 'Editar producto' : 'Nuevo producto' }}
+  </h1>
+
+  <!-- GRID 12 → permite “encajar” especificaciones bajo nombre+precio -->
+  <form [formGroup]="form"
+        (ngSubmit)="guardar()"
+        class="grid gap-6 md:grid-cols-12">
+
+    <!-- Nombre (fila 1, col 1-6) -->
+    <div class="md:col-span-6">
+      <label class="mb-1 block text-sm font-medium">Nombre</label>
+      <input formControlName="nombre"
+             class="w-full rounded-lg border border-gray-300 px-3 py-2
+                    text-sm focus:ring-[#E5D2BC]"/>
+    </div>
+
+    <!-- Precio (fila 1, col 7-9) -->
+    <div class="md:col-span-3">
+      <label class="mb-1 block text-sm font-medium">Precio (€)</label>
+      <input formControlName="precio" type="number" step="0.01"
+             class="w-full rounded-lg border border-gray-300 px-3 py-2
+                    text-sm focus:ring-[#E5D2BC]"/>
+    </div>
+
+    <!-- Imagen + preview (fila 1-3, col 10-12) -->
+    <div class="md:col-span-3 md:row-span-3 flex flex-col gap-3">
+      <div>
+        <label class="mb-1 block text-sm font-medium">Imagen</label>
+        <input type="file" accept=".png,.jpg,.jpeg,.webp"
+               (change)="onFile($event)"
+               class="block w-full cursor-pointer rounded-lg border border-gray-300
+                      file:mr-4 file:rounded-full file:border-0 file:bg-[#E5D2BC]
+                      file:px-3 file:py-1 file:text-sm file:font-medium
+                      file:text-gray-800 hover:file:bg-[#d9c0a9]"/>
+        <p *ngIf="imgError" class="mt-1 text-xs text-red-500">{{ imgError }}</p>
+      </div>
+
+      <div
+        class="relative aspect-square w-full rounded-lg border-2 border-dashed
+               border-gray-300 flex items-center justify-center overflow-hidden">
+        <ng-container *ngIf="imagePreview; else vacio">
+          <img [src]="imagePreview" class="absolute inset-0 h-full w-full object-contain"/>
+        </ng-container>
+        <ng-template #vacio>
+          <span class="text-xs text-gray-400 text-center px-4">Previsualización</span>
+        </ng-template>
+      </div>
+    </div>
+
+    <!-- Especificaciones (fila 2-3, col 1-9 → ocupa hueco libre) -->
+    <div
+      class="md:col-span-9 md:row-start-2 md:row-span-2 space-y-2">
+      <label class="block text-sm font-medium">Especificaciones</label>
+
+      <div class="grid gap-2 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4
+                  max-h-56 overflow-y-auto pr-1">
+        <label *ngFor="let e of especificaciones$ | async" class="cursor-pointer select-none">
+          <input  type="checkbox"
+        class="peer sr-only"
+        [value]="e.id"
+        [checked]="seleccion.has(e.id)"
+        (change)="toggle(e.id, $any($event.target).checked)" />
+
+          <div
+            class="flex items-center justify-center rounded-lg border
+                   border-gray-300 bg-white px-3 py-2 text-xs text-center
+                   transition peer-checked:border-[#E5D2BC]
+                   peer-checked:bg-[#F7F3EF]">
+            {{ e.descripcion }}
+          </div>
+        </label>
+      </div>
+    </div>
+
+    <!-- Botones inferiores (fila 4 completa) -->
+    <div class="md:col-span-12 flex flex-col sm:flex-row gap-3">
+      <button type="submit"
+              [disabled]="loading || form.invalid"
+              class="flex-1 rounded-full bg-[#E5D2BC] py-2 font-medium text-gray-800
+                     transition hover:bg-[#d9c0a9] disabled:opacity-50">
+        {{ form.get('id')?.value ? 'Guardar cambios' : 'Crear pastel' }}
+      </button>
+      <button type="button"
+              (click)="cancelar()"
+              class="flex-1 rounded-full bg-gray-100 py-2 text-sm text-gray-600
+                     hover:bg-gray-200">
+        Cancelar
+      </button>
+    </div>
+  </form>
+
+  <p *ngIf="errorMsg"
+     class="mt-6 rounded bg-red-100 p-4 text-red-700">
+    {{ errorMsg }}
+  </p>
+</section>

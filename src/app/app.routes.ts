@@ -93,8 +93,7 @@ export const routes: Routes = [
             .then(m => m.AceptarUsuariosComponent),
       },
 
-      /* redirect por defecto dentro del panel */
-      { path: '', redirectTo: 'clientes', pathMatch: 'full' },
+      { path: '', redirectTo: 'pedidos', pathMatch: 'full' },
     ],
   },
 ];

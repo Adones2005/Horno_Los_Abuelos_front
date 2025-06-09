@@ -31,6 +31,12 @@ export class PastelesService {
     return this.http.get<Pastel[]>(`${this.apiUrl}/pasteles`);
   }
 
+  
+  /** Obtiene un pastel por id (para editar) */
+  getOne(id: number): Observable<Pastel> {
+    return this.http.get<Pastel>(`${this.apiUrl}/pasteles/${id}`);
+  }
+
   /* ──────────────── CREATE ─────────────── */
   create(dto: PastelForm): Observable<Pastel> {
     const body = this.toFormData(dto);
