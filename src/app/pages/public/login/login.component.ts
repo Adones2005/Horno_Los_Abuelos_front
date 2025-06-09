@@ -6,7 +6,7 @@ import {
 } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { PageTitleComponent } from '../../shared/page-title/page-title.component';
+import { PageTitleComponent } from '../../../shared/page-title/page-title.component';
 import { finalize } from 'rxjs/operators';
 
 import {

@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { AsyncPipe, NgFor, NgIf } from '@angular/common';
-import { PageTitleComponent } from '../../shared/page-title/page-title.component';
+import { PageTitleComponent } from '../../../shared/page-title/page-title.component';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
 import { EmpleadosService, Empleado } from '../../../core/services/empleados.service';

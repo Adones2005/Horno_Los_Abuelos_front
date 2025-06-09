@@ -1,7 +1,7 @@
 // src/app/pages/private/clientes/clientes.component.ts
 import { Component, inject, OnInit } from '@angular/core';
 import { AsyncPipe, NgIf, NgFor } from '@angular/common';
-import { PageTitleComponent } from '../../shared/page-title/page-title.component';
+import { PageTitleComponent } from '../../../shared/page-title/page-title.component';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { ClientesService, Cliente } from '../../../core/services/cliente.service';

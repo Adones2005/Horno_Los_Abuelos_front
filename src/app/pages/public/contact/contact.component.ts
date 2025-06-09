@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
-import { PageTitleComponent } from '../../shared/page-title/page-title.component';
+import { PageTitleComponent } from '../../../shared/page-title/page-title.component';
 import { finalize } from 'rxjs';
 import { ContactService, ContactMessage } from '../../../core/services/contact.service';
 
