@@ -1,88 +1,85 @@
 <div class="flex min-h-screen text-gray-800">
-  <!-- Sidebar – ahora “pegajoso” bajo la cabecera de 64 px -->
-<aside
-  class="w-64 shrink-0 bg-[#B9A99B] text-gray-100 shadow-lg
-         sticky top-16                
-         h-[calc(100vh-4rem)]      
-         overflow-y-auto"            
->
-  <!-- título -->
-  <div class="px-6 py-5 text-xl font-semibold tracking-wide">
-    Panel&nbsp;de&nbsp;control
-  </div>
+  <!-- ───── Sidebar ───── -->
+  <aside
+    class="sticky top-16 w-64 shrink-0 overflow-y-auto bg-[#B9A99B] text-gray-100 shadow-lg h-[calc(100vh-4rem)]"
+  >
+    <!-- título -->
+    <div class="px-6 py-5 text-xl font-semibold tracking-wide">
+      Panel&nbsp;de&nbsp;control
+    </div>
 
-  <!-- bloque Gestión -->
-  <h4 class="px-6 pt-4 pb-2 text-xs font-semibold uppercase tracking-wider text-gray-200/70">
-    Gestión
-  </h4>
-  <nav class="space-y-0.5">
-    <a
-      *ngIf="(role$ | async) === 'gestor'"
-      routerLink="empleados"
-      routerLinkActive="before:opacity-100 bg-white/15 text-white"
-      class="group flex items-center gap-3 rounded-r-full
-            py-2 pl-5 pr-4 text-sm font-medium hover:bg-white/10
-            before:absolute before:left-0 before:h-full before:w-1
-            before:bg-white before:opacity-0 before:transition">
-      <i class="fa-solid fa-users-gear w-4"></i>
-      Empleados
-    </a>
-    <a routerLink="clientes"
-       routerLinkActive="before:opacity-100 bg-white/15 text-white"
-       class="group flex items-center gap-3 rounded-r-full
-              py-2 pl-5 pr-4 text-sm font-medium hover:bg-white/10
-              before:absolute before:left-0 before:h-full before:w-1
-              before:bg-white before:opacity-0 before:transition">
-      <i class="fa-solid fa-user-group w-4"></i> Clientes
-    </a>
-    <a routerLink="repartos"
-       routerLinkActive="before:opacity-100 bg-white/15 text-white"
-       class="group flex items-center gap-3 rounded-r-full
-              py-2 pl-5 pr-4 text-sm font-medium hover:bg-white/10
-              before:absolute before:left-0 before:h-full before:w-1
-              before:bg-white before:opacity-0 before:transition">
-      <i class="fa-solid fa-truck w-4"></i> Repartos
-    </a>
-  </nav>
+    <!-- Gestión -->
+    <h4 class="px-6 pt-4 pb-2 text-xs font-semibold uppercase tracking-wider text-gray-200/70">
+      Gestión
+    </h4>
+    <nav class="space-y-0.5">
+      <a
+        *ngIf="(role$ | async) === 'gestor'"
+        routerLink="empleados"
+        routerLinkActive="bg-white/15 text-white"
+        class="group flex items-center gap-3 rounded-r-full py-2 pl-5 pr-4 text-sm font-medium hover:bg-white/10"
+      >
+        <i class="fa-solid fa-users-gear w-4"></i>
+        Empleados
+      </a>
 
-  <div class="my-4 border-t border-white/20"></div>
+      <a
+        routerLink="clientes"
+        routerLinkActive="bg-white/15 text-white"
+        class="group flex items-center gap-3 rounded-r-full py-2 pl-5 pr-4 text-sm font-medium hover:bg-white/10"
+      >
+        <i class="fa-solid fa-user-group w-4"></i>
+        Clientes
+      </a>
 
-  <!-- bloque Operaciones -->
-  <h4 class="px-6 pb-2 text-xs font-semibold uppercase tracking-wider text-gray-200/70">
-    Operaciones
-  </h4>
-  <nav class="space-y-0.5">
-    <a routerLink="catalogo"
-       routerLinkActive="before:opacity-100 bg-white/15 text-white"
-       class="group flex items-center gap-3 rounded-r-full
-              py-2 pl-5 pr-4 text-sm font-medium hover:bg-white/10
-              before:absolute before:left-0 before:h-full before:w-1
-              before:bg-white before:opacity-0 before:transition">
-      <i class="fa-solid fa-book w-4"></i> Catálogo
-    </a>
-    <a routerLink="pedidos"
-       routerLinkActive="before:opacity-100 bg-white/15 text-white"
-       class="group flex items-center gap-3 rounded-r-full
-              py-2 pl-5 pr-4 text-sm font-medium hover:bg-white/10
-              before:absolute before:left-0 before:h-full before:w-1
-              before:bg-white before:opacity-0 before:transition">
-      <i class="fa-solid fa-receipt w-4"></i> Pedidos
-    </a>
-    <a routerLink="gestor-comercial"
-       routerLinkActive="before:opacity-100 bg-white/15 text-white"
-       class="group flex items-center gap-3 rounded-r-full
-              py-2 pl-5 pr-4 text-sm font-medium hover:bg-white/10
-              before:absolute before:left-0 before:h-full before:w-1
-              before:bg-white before:opacity-0 before:transition">
-      <i class="fa-solid fa-briefcase w-4"></i> Gestor&nbsp;comercial
-    </a>
-  </nav>
-</aside>
+      <a
+        routerLink="repartos"
+        routerLinkActive="bg-white/15 text-white"
+        class="group flex items-center gap-3 rounded-r-full py-2 pl-5 pr-4 text-sm font-medium hover:bg-white/10"
+      >
+        <i class="fa-solid fa-truck w-4"></i>
+        Repartos
+      </a>
+    </nav>
 
+    <div class="my-4 border-t border-white/20"></div>
 
+    <!-- Operaciones -->
+    <h4 class="px-6 pb-2 text-xs font-semibold uppercase tracking-wider text-gray-200/70">
+      Operaciones
+    </h4>
+    <nav class="space-y-0.5">
+      <a
+        routerLink="catalogo-interno"
+        routerLinkActive="bg-white/15 text-white"
+        class="group flex items-center gap-3 rounded-r-full py-2 pl-5 pr-4 text-sm font-medium hover:bg-white/10"
+      >
+        <i class="fa-solid fa-book w-4"></i>
+        Catálogo
+      </a>
 
-  <!-- ── Área principal ──────────────────────────────────── -->
-  <main class="flex-1 lg:rounded-l-3xl shadow-inner">
+      <a
+        routerLink="pedidos"
+        routerLinkActive="bg-white/15 text-white"
+        class="group flex items-center gap-3 rounded-r-full py-2 pl-5 pr-4 text-sm font-medium hover:bg-white/10"
+      >
+        <i class="fa-solid fa-receipt w-4"></i>
+        Pedidos
+      </a>
+
+      <a
+        routerLink="gestor-comercial"
+        routerLinkActive="bg-white/15 text-white"
+        class="group flex items-center gap-3 rounded-r-full py-2 pl-5 pr-4 text-sm font-medium hover:bg-white/10"
+      >
+        <i class="fa-solid fa-briefcase w-4"></i>
+        Gestor&nbsp;comercial
+      </a>
+    </nav>
+  </aside>
+
+  <!-- ── Área principal ──────────────────────────── -->
+  <main class="flex-1 shadow-inner lg:rounded-l-3xl">
     <router-outlet></router-outlet>
   </main>
 </div>

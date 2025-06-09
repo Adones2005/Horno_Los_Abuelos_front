@@ -1,81 +1,99 @@
 import { Routes } from '@angular/router';
 
 export const routes: Routes = [
+  /* ────────── redirect raíz ────────── */
   { path: '', redirectTo: 'identificarse', pathMatch: 'full' },
 
-  /* ─────── Públicas ─────── */
+  /* ────────── públicas ────────── */
   {
     path: 'identificarse',
     loadComponent: () =>
-      import('./pages/public/login/login.component').then(
-        m => m.LoginComponent
-      ),
+      import('./pages/public/login/login.component')
+        .then(m => m.LoginComponent),
   },
   {
     path: 'registrar',
     loadComponent: () =>
-      import('./pages/public/registrar/registrar.component').then(
-        m => m.RegistrarComponent
-      ),
+      import('./pages/public/registrar/registrar.component')
+        .then(m => m.RegistrarComponent),
   },
   {
     path: 'catalogo',
     loadComponent: () =>
-      import('./pages/public/catalogo/catalogo.component').then(
-        m => m.CatalogoComponent
-      ),
+      import('./pages/public/catalogo/catalogo.component')
+        .then(m => m.CatalogoComponent),
   },
   {
     path: 'contacto',
     loadComponent: () =>
-      import('./pages/public/contact/contact.component').then(
-        m => m.ContactComponent
-      ),
+      import('./pages/public/contact/contact.component')
+        .then(m => m.ContactComponent),
   },
 
-  /* ─────── Privadas (PANEL) ─────── */
+  /* ────────── privadas (Panel) ────────── */
   {
     path: 'control-panel',
     loadComponent: () =>
-      import('./pages/private/control-panel/control-panel.component').then(
-        m => m.ControlPanelComponent
-      ),
+      import('./pages/private/control-panel/control-panel.component')
+        .then(m => m.ControlPanelComponent),
+
+    /* ───── hijos directos del panel ───── */
     children: [
+      /* Clientes */
       {
         path: 'clientes',
         loadComponent: () =>
-          import('./pages/private/clientes/clientes.component').then(
-            m => m.ClientesComponent
-          ),
+          import('./pages/private/clientes/clientes.component')
+            .then(m => m.ClientesComponent),
       },
       {
         path: 'clientes/nuevo',
         loadComponent: () =>
-          import('./pages/private/clientes/form/cliente-form.component').then(
-            m => m.ClienteFormComponent
-          ),
+          import('./pages/private/clientes/form/cliente-form.component')
+            .then(m => m.ClienteFormComponent),
       },
       {
         path: 'clientes/:id',
         loadComponent: () =>
-          import('./pages/private/clientes/form/cliente-form.component').then(
-            m => m.ClienteFormComponent
-          ),
+          import('./pages/private/clientes/form/cliente-form.component')
+            .then(m => m.ClienteFormComponent),
       },
+
+      /* Catálogo interno */
+      {
+        path: 'catalogo-interno',
+        loadComponent: () =>
+          import('./pages/private/catalogo/catalogo.component')
+            .then(m => m.CatalogoComponent),
+      },
+      {
+        path: 'catalogo-interno/nuevo',
+        loadComponent: () =>
+          import('./pages/private/catalogo/form-catalogo/form-catalogo.component')
+            .then(m => m.FormCatalogoComponent),
+      },
+      {
+        path: 'catalogo-interno/editar/:id',
+        loadComponent: () =>
+          import('./pages/private/catalogo/form-catalogo/form-catalogo.component')
+            .then(m => m.FormCatalogoComponent),
+      },
+
+      /* Empleados y autorización */
       {
         path: 'empleados',
         loadComponent: () =>
-          import('./pages/private/empleados/empleados.component').then(
-            m => m.EmpleadosComponent
-          ),
+          import('./pages/private/empleados/empleados.component')
+            .then(m => m.EmpleadosComponent),
       },
       {
         path: 'aceptar-usuarios',
         loadComponent: () =>
-          import('./pages/private/aceptar-usuarios/aceptar-usuarios.component').then(
-            m => m.AceptarUsuariosComponent
-          ),
+          import('./pages/private/aceptar-usuarios/aceptar-usuarios.component')
+            .then(m => m.AceptarUsuariosComponent),
       },
+
+      /* redirect por defecto dentro del panel */
       { path: '', redirectTo: 'clientes', pathMatch: 'full' },
     ],
   },
