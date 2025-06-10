@@ -7,12 +7,8 @@ import { ClientesService } from '../../../core/services/cliente.service';
 import { RutasService } from '../../../core/services/rutas.service';
 import { catchError, combineLatest, map, of, Observable } from 'rxjs';
 
-@Component({
-  selector: 'app-direcciones',
-  standalone: true,
-  imports: [NgIf, NgFor, AsyncPipe, PageTitleComponent],
-  templateUrl: './direcciones.component.html',
-})
+
+
 interface DireccionRow {
   id: number;
   calle: string;
@@ -21,7 +17,12 @@ interface DireccionRow {
   ruta: string;
   cliente: string;
 }
-
+@Component({
+  selector: 'app-direcciones',
+  standalone: true,
+  imports: [NgIf, NgFor, AsyncPipe, PageTitleComponent],
+  templateUrl: './direcciones.component.html',
+})
 export class DireccionesComponent implements OnInit {
   private dirSvc = inject(DireccionesService);
   private clienteSvc = inject(ClientesService);
