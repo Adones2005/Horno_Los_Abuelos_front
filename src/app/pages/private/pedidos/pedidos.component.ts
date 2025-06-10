@@ -11,6 +11,7 @@ import { PedidosService } from '../../../core/services/pedido.service';
 import { ClientesService } from '../../../core/services/cliente.service';
 import { DireccionesService } from '../../../core/services/direcciones.service';
 import { EmpleadosService } from '../../../core/services/empleados.service';
+import { LoginService } from '../../../core/services/login.service';
 import { PedidoEstadoPipe } from '../../../shared/pedido-estado.pipe';
 import Swal from 'sweetalert2';
 
@@ -46,10 +47,12 @@ export class PedidosComponent implements OnInit {
   private clientesSvc = inject(ClientesService);
   private dirSvc = inject(DireccionesService);
   private empSvc = inject(EmpleadosService);
+  private loginSvc = inject(LoginService);
 
   pedidos$: Observable<PedidoVM[]> = of([]);
   errorMsg = '';
   filtro = -1;
+  role$ = this.loginSvc.role$;
   
    constructor(private router: Router) {}
 
@@ -130,6 +133,22 @@ export class PedidosComponent implements OnInit {
           return of([]);
         })
       ).subscribe(vms => this.pedidos$ = of(vms));
+    });
+  }
+
+  confirmar(id: number): void {
+    Swal.fire({
+      title: `¿Confirmar pedido #${id}?`,
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Sí, confirmar',
+      cancelButtonText: 'Cancelar',
+    }).then(result => {
+      if (!result.isConfirmed) return;
+      this.pedidosSvc.confirmar(id).subscribe({
+        next: () => { Swal.fire('Confirmado', '', 'success'); this.load(); },
+        error: err => Swal.fire('Error', err.message, 'error'),
+      });
     });
   }
 
