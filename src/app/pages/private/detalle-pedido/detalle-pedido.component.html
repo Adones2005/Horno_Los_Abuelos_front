@@ -1,1 +1,36 @@
-<p>detalle-pedido works!</p>
+<section class="p-4 sm:p-6 lg:p-8 xl:p-10">
+  <app-page-title title="Detalle del pedido"></app-page-title>
+
+  <div *ngIf="errorMsg" class="mb-4 rounded bg-red-100 p-4 text-red-700">
+    {{ errorMsg }}
+  </div>
+
+  <ng-container *ngIf="pedido as p">
+    <!-- Card de información principal -->
+    <div class="mb-6 rounded-2xl bg-white p-6 shadow">
+      <h2 class="text-lg font-semibold text-gray-700 mb-4">Pedido #{{ p.id }}</h2>
+      <p class="text-sm text-gray-600"><strong>Cliente:</strong> {{ p.cliente }}</p>
+      <p class="text-sm text-gray-600"><strong>Dirección:</strong> {{ p.direccion }}</p>
+      <p class="text-sm text-gray-600"><strong>Estado:</strong> {{ ['Creado','Confirmado','Entregado'][p.estado] }}</p>
+      <p *ngIf="p.empleado" class="text-sm text-gray-600"><strong>Repartidor:</strong> {{ p.empleado }}</p>
+    </div>
+
+    <!-- Mapa de destino -->
+    <div id="map" class="mb-6 h-64 w-full rounded-2xl shadow"></div>
+
+    <!-- Lista de pasteles -->
+    <div class="rounded-2xl bg-white p-6 shadow">
+      <h3 class="mb-4 text-lg font-semibold text-gray-700">Pasteles</h3>
+      <ul class="space-y-4">
+        <li *ngFor="let it of pasteles" class="flex items-center justify-between">
+          <div class="flex items-center gap-4">
+            <img [src]="apiUrl + '/images/' + it.pastel.imagen" alt="{{ it.pastel.nombre }}" class="h-16 w-16 rounded object-contain bg-[#fafafa]" />
+            <span class="text-sm font-medium text-gray-700">{{ it.pastel.nombre }}</span>
+          </div>
+          <span class="text-sm text-gray-600">x{{ it.cantidad }}</span>
+        </li>
+        <li *ngIf="pasteles.length === 0" class="text-gray-500 text-sm">Sin pasteles asociados</li>
+      </ul>
+    </div>
+  </ng-container>
+</section>

@@ -112,6 +112,20 @@ export const routes: Routes = [
           import('./pages/private/pedidos/pedidos.component')
             .then(m => m.PedidosComponent),
       },
+            {
+        path: 'pedidos/nuevo',
+        loadComponent: () =>
+          import('./pages/private/pedidos/pedido-form/pedido-form.component')
+            .then(m => m.PedidoFormComponent),
+      },
+      /* Reparto diario */
+      {
+        path: 'repartos',
+        loadComponent: () =>
+          import('./pages/private/repartos/repartos.component')
+            .then(m => m.RepartosComponent),
+      },
+
       {
         path: 'pedidos/detalle/:id',
         loadComponent: () =>

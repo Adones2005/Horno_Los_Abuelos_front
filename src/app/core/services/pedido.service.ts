@@ -22,6 +22,13 @@ export interface PedidoVM {
   estado:    0 | 1 | 2;
 }
 
+
+export interface PedidoPastel {
+  pastel:   { id: number; nombre: string; imagen: string };
+  cantidad: number;
+}
+
+
 /* ────────── Servicio ────────── */
 @Injectable({ providedIn: 'root' })
 export class PedidosService {
@@ -38,6 +45,11 @@ export class PedidosService {
   /** Obtiene un pedido concreto */
   getOne(id: number): Observable<Pedido> {
     return this.http.get<Pedido>(`${this.apiUrl}/pedidos/${id}`);
+  }
+
+   /** Lista los pasteles de un pedido */
+  getPasteles(id: number): Observable<PedidoPastel[]> {
+    return this.http.get<PedidoPastel[]>(`${this.apiUrl}/pedidos-pasteles/pedido/${id}`);
   }
 
   /* ========== UPDATE ========== */
@@ -64,4 +76,13 @@ export class PedidosService {
   delete(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/pedidos/${id}`);
   }
+
+   create(dto: {
+    clienteId: number;
+    direccionId: number;
+    items: { pastelId: number; cantidad: number }[];
+  }): Observable<Pedido> {
+    return this.http.post<Pedido>(`${this.apiUrl}/pedidos`, dto);
+  }
+
 }

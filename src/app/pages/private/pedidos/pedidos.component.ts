@@ -156,6 +156,10 @@ export class PedidosComponent implements OnInit {
     this.router.navigate(['/control-panel/pedidos/detalle/', id]);
   }
 
+   nuevo() {
+    this.router.navigateByUrl('/control-panel/pedidos/nuevo');
+  }
+
   badge(e: 0 | 1 | 2) {
     return {
       'rounded-full px-2 py-0.5 text-xs': true,
