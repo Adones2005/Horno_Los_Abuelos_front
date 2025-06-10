@@ -14,6 +14,7 @@ export interface Pedido {
 
 /** Vista simplificada para la tabla / cards */
 export interface PedidoVM {
+  clienteId(clienteId: any): string;
   id:        number;
   cliente:   number;
   direccion: number;

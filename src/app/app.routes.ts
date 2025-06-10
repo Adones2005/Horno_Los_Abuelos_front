@@ -92,6 +92,13 @@ export const routes: Routes = [
           import('./pages/private/pedidos/pedidos.component')
             .then(m => m.PedidosComponent),
       },
+      {
+        path: 'pedidos/detalle/:id',
+        loadComponent: () =>
+          import('./pages/private/detalle-pedido/detalle-pedido.component')
+            .then(m => m.DetallePedidoComponent),
+      },
+
 
       {
         path: 'aceptar-usuarios',
