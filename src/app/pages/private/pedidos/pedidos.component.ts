@@ -7,17 +7,17 @@ import { NgFor } from '@angular/common';
 import { AsyncPipe } from '@angular/common';
 import { NgClass } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { Observable } from 'rxjs';
-import { of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { combineLatest } from 'rxjs';
-import { map } from 'rxjs';
-import { catchError } from 'rxjs';
+import { map, catchError, switchMap } from 'rxjs/operators';
 
 import { PedidosService } from '../../../core/services/pedido.service';
 import { ClientesService } from '../../../core/services/cliente.service';
 import { DireccionesService } from '../../../core/services/direcciones.service';
 import { EmpleadosService } from '../../../core/services/empleados.service';
 import { PedidoEstadoPipe } from '../../../shared/pedido-estado.pipe';
+import Swal from 'sweetalert2';
+import e from 'express';
 
 /* ── modelos ─────────────────────────────────────────────── */
 interface PedidoRaw {
@@ -61,17 +61,87 @@ export class PedidosComponent implements OnInit {
   ngOnInit() { this.load(); }
 
   private load(): void {
-    this.pedidos$ = combineLatest([
-      this.pedidosSvc.getAll(),              
-      this.clientesSvc.getAll(),      
-      this.dirSvc.getAllTextos(),          
-      this.empSvc.activos(),         
-    ]).pipe(
+  console.log("Cargando pedidos...");
+  this.pedidos$ = combineLatest([
+    this.pedidosSvc.getAll(),
+    this.clientesSvc.getAll(),
+    this.dirSvc.getAllTextos(),
+    this.empSvc.activos(),
+  ]).pipe(
+    map(([peds, cli, dir, emp]) => {
+      console.log("Pedidos recibidos:", peds);
+      console.log("Clientes recibidos:", cli);
+      console.log("Direcciones recibidas:", dir);
+      console.log("Empleados recibidos:", emp);
+
+      const cMap = new Map(cli.map(c => [c.id, c.nombre]));
+      const dMap = new Map(dir.map(d => [d.id, d.calle]));
+      const eMap = new Map(emp.map(e => [e.id, e.nombre]));
+
+
+      return peds.map(p => ({
+        id        : p.id,
+        cliente   : cMap.get(p.cliente)   ?? '—',
+        direccion : dMap.get(p.direccion) ?? '—',
+        empleado  : p.empleado ? eMap.get(p.empleado) ?? null : null,
+        estado    : p.estado,
+      })) as PedidoVM[];
+    }),
+    catchError(err => {
+      this.errorMsg = err.message;
+      console.error("Error al cargar los datos:", err);
+      return of([]);
+    })
+  );
+}
+
+
+  /**
+   * Elimina un pedido por su ID tras confirmación y vuelve a cargar la lista.
+   */
+  eliminar(id: number): void {
+    Swal.fire({
+      title: `¿Eliminar pedido #${id}?`,
+      text: 'Esta acción no se puede deshacer.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar',
+    }).then(result => {
+      if (result.isConfirmed) {
+        this.pedidosSvc.delete(id).pipe(
+          catchError(err => {
+            Swal.fire('Error', err.message, 'error');
+            return of(null);
+          })
+        ).subscribe(res => {
+          if (res !== null) {
+            Swal.fire('Eliminado', 'El pedido ha sido eliminado.', 'success');
+            this.load();
+          }
+        });
+      }
+    });
+  
+    this.pedidosSvc.delete(id).pipe(
+      // tras borrar, recargamos
+      switchMap(() => {
+        this.errorMsg = '';
+        return this.pedidosSvc.getAll();
+      }),
+      // mapeamos de nuevo al VM para mantener consistencia
+      switchMap(pedsRaw =>
+        combineLatest([
+          of(pedsRaw),
+          this.clientesSvc.getAll(),
+          this.dirSvc.getAllTextos(),
+          this.empSvc.activos(),
+        ])
+      ),
       map(([peds, cli, dir, emp]) => {
         const cMap = new Map(cli.map(c => [c.id, c.nombre]));
-        const dMap = new Map(dir.map(d => [d.id, d.texto]));
+        const dMap = new Map(dir.map(d => [d.id, d.calle]));
         const eMap = new Map(emp.map(e => [e.id, e.nombre]));
-
         return peds.map(p => ({
           id        : p.id,
           cliente   : cMap.get(p.cliente)   ?? '—',
@@ -80,16 +150,26 @@ export class PedidosComponent implements OnInit {
           estado    : p.estado,
         })) as PedidoVM[];
       }),
-      catchError(err => { this.errorMsg = err.message; return of([]); })
-    );
+      catchError(err => {
+        this.errorMsg = err.message;
+        return of([]);
+      })
+    ).subscribe(vms => {
+      // actualizamos el observable manualmente
+      this.pedidos$ = of(vms);
+    });
   }
 
   /* helpers css */
   badge(e:0|1|2){
-    return {'rounded-full px-2 py-0.5 text-xs':true,
-            'bg-gray-200 text-gray-700':e===0,
-            'bg-amber-200 text-amber-700':e===1,
-            'bg-green-200 text-green-700':e===2};
+    return {
+      'rounded-full px-2 py-0.5 text-xs': true,
+      'bg-gray-200 text-gray-700': e === 0,
+      'bg-amber-200 text-amber-700': e === 1,
+      'bg-green-200 text-green-700': e === 2,
+    };
   }
-  label(e:0|1|2){return ['Creado','Confirmado','Entregado'][e];}
+  label(e:0|1|2) {
+    return ['Creado','Confirmado','Entregado'][e];
+  }
 }

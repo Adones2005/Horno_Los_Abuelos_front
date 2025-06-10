@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { Observable } from 'rxjs';
 
-export interface DireccionTexto { id: number; texto: string; }
+export interface DireccionTexto { id: number; calle: string; }
 
 @Injectable({ providedIn: 'root' })
 export class DireccionesService {
@@ -14,7 +14,7 @@ export class DireccionesService {
   constructor() { }
 
   getTexto(id: number) {
-     return this.http.get<{texto:string}>(`${this.apiUrl}/direcciones/${id}`);
+     return this.http.get<{calle:string}>(`${this.apiUrl}/direcciones/${id}`);
      }
 
   getAllTextos(): Observable<DireccionTexto[]> {
