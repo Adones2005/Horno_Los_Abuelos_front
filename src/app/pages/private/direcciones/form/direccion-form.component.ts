@@ -3,8 +3,10 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { DireccionesService, Direccion } from '../../../../core/services/direcciones.service';
+import { ClientesService, Cliente } from '../../../../core/services/cliente.service';
+import { RutasService, Ruta } from '../../../../core/services/rutas.service';
 import { PageTitleComponent } from '../../../../shared/page-title/page-title.component';
-import { finalize } from 'rxjs';
+import { finalize, Observable, of } from 'rxjs';
 
 declare const google: any;
 
@@ -17,6 +19,8 @@ declare const google: any;
 export class DireccionFormComponent implements OnInit, AfterViewInit {
   private fb = inject(FormBuilder);
   private dirSvc = inject(DireccionesService);
+  private clienteSvc = inject(ClientesService);
+  private rutasSvc = inject(RutasService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
 
@@ -25,13 +29,16 @@ export class DireccionFormComponent implements OnInit, AfterViewInit {
   editMode = false;
   direccionId: number | null = null;
 
+  rutas$: Observable<Ruta[]> = of([]);
+  clientes$: Observable<Cliente[]> = of([]);
+
   form = this.fb.group(
     {
       calle: ['', [Validators.required, Validators.maxLength(255)]],
       ciudad: ['', [Validators.required, Validators.maxLength(100)]],
       codigoPostal: ['', [Validators.required, Validators.maxLength(10)]],
-      rutaId: [0, [Validators.required]],
-      clienteId: [0, [Validators.required]],
+      rutaId: [0, [Validators.required, Validators.min(1)]],
+      clienteId: [0, [Validators.required, Validators.min(1)]],
     },
     { nonNullable: true }
   );
@@ -41,6 +48,8 @@ export class DireccionFormComponent implements OnInit, AfterViewInit {
   autocomplete!: any;
 
   ngOnInit(): void {
+    this.rutas$ = this.rutasSvc.getAll();
+    this.clientes$ = this.clienteSvc.getAll();
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       this.editMode = true;
