@@ -1,0 +1,40 @@
+<section class="p-8">
+  <div class="mb-6 flex items-center justify-between">
+    <app-page-title title="Direcciones" class="md:mb-0"></app-page-title>
+    <button (click)="nuevo()" class="rounded-full bg-[#E5D2BC] px-4 py-2 text-sm font-medium text-gray-800 transition hover:bg-[#d9c0a9]">Nuevo</button>
+  </div>
+
+  <div *ngIf="errorMsg" class="mb-4 rounded bg-red-100 p-4 text-red-700">
+    {{ errorMsg }}
+  </div>
+
+  <div class="overflow-x-auto">
+    <table class="min-w-full divide-y divide-gray-200 bg-white shadow-sm rounded-lg">
+      <thead class="bg-[#E5D2BC] text-left text-xs uppercase tracking-wider text-gray-800">
+        <tr>
+          <th class="px-4 py-3">ID</th>
+          <th class="px-4 py-3">Calle</th>
+          <th class="px-4 py-3">Ciudad</th>
+          <th class="px-4 py-3">C. Postal</th>
+          <th class="px-4 py-3">Ruta</th>
+          <th class="px-4 py-3">Cliente</th>
+          <th class="px-4 py-3 w-24">Acciones</th>
+        </tr>
+      </thead>
+      <tbody *ngIf="(direcciones$ | async) as dirs" class="divide-y divide-gray-100">
+        <tr *ngFor="let d of dirs; let i = index" [class.bg-gray-50]="i % 2 === 0">
+          <td class="px-4 py-2">{{ d.id }}</td>
+          <td class="px-4 py-2">{{ d.calle }}</td>
+          <td class="px-4 py-2">{{ d.ciudad }}</td>
+          <td class="px-4 py-2">{{ d.codigoPostal }}</td>
+          <td class="px-4 py-2">{{ d.rutaId }}</td>
+          <td class="px-4 py-2">{{ d.clienteId }}</td>
+          <td class="px-4 py-2">
+            <button (click)="editar(d)" class="text-sm text-blue-600 hover:underline">Editar</button>
+            <button (click)="borrarConfirm(d)" class="ml-3 text-sm text-red-600 hover:underline">Borrar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
