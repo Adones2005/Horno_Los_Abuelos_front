@@ -41,5 +41,10 @@ export class ClientesService {
     return this.http.delete(`${this.apiUrl}/clientes/${id}`);
   }
 
+  // core/services/clientes.service.ts
+  getNombre(id: number) { return this.http.get<{nombre:string}>(`${this.apiUrl}/clientes/${id}`); }
+
+
+
 
 }

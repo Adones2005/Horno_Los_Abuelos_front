@@ -87,6 +87,13 @@ export const routes: Routes = [
             .then(m => m.EmpleadosComponent),
       },
       {
+        path: 'pedidos',
+        loadComponent: () =>
+          import('./pages/private/pedidos/pedidos.component')
+            .then(m => m.PedidosComponent),
+      },
+
+      {
         path: 'aceptar-usuarios',
         loadComponent: () =>
           import('./pages/private/aceptar-usuarios/aceptar-usuarios.component')

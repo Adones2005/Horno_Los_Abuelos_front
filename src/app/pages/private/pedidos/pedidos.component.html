@@ -1,0 +1,52 @@
+<!-- tabla (≥ lg)  ─────────────────────────────────────────────── -->
+<table *ngIf="pedidos$ | async as pedidos"
+       class="hidden lg:table w-full border-separate border-spacing-0 text-sm">
+
+  <!-- cabecera -->
+  <thead class="bg-[#F6F2F1] text-xs/relaxed font-semibold uppercase tracking-wider text-gray-600">
+    <tr>
+      <th class="th w-14 rounded-tl-2xl">#</th>
+      <th class="th">Cliente</th>
+      <th class="th">Dirección</th>
+      <th class="th">Estado</th>
+      <th class="th">Repartidor</th>
+      <th class="th w-24 rounded-tr-2xl"></th>
+    </tr>
+  </thead>
+
+  <!-- cuerpo -->
+  <tbody class="text-gray-800">
+    <tr *ngFor="let p of pedidos | estado:filtro; let i = index"
+        [class.bg-white]="i % 2 === 0"
+        [class.bg-[#FBF9F7]]="i % 2 === 1"
+        class="transition-colors hover:bg-[#FFF5ED]">
+
+      <td class="td font-medium">{{ p.id }}</td>
+      <td class="td">{{ p.cliente }}</td>
+      <td class="td truncate max-w-[260px]">{{ p.direccion }}</td>
+
+      <!-- badge -->
+      <td class="td">
+        <span [ngClass]="badge(p.estado)">{{ label(p.estado) }}</span>
+      </td>
+
+      <td class="td">{{ p.empleado ?? '—' }}</td>
+
+      <td class="td">
+        <a routerLink="detalle/{{ p.id }}"
+           class="inline-block rounded-full bg-blue-50 px-3 py-1 text-xs font-medium text-blue-600 hover:bg-blue-100">
+          Editar
+        </a>
+      </td>
+    </tr>
+  </tbody>
+
+  <!-- pie (opcional) -->
+  <tfoot *ngIf="pedidos.length === 0">
+    <tr>
+      <td colspan="6" class="rounded-b-2xl bg-[#FDFBFA] py-4 text-center text-sm text-gray-500">
+        No hay pedidos con este filtro.
+      </td>
+    </tr>
+  </tfoot>
+</table>

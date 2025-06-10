@@ -49,5 +49,10 @@ export class EmpleadosService {
     return this.http.request('delete', `${this.apiUrl}/empleados/${id}`);
 }
 
+  // core/services/empleados.service.ts
+  getNombre(id: number) { 
+    return this.http.get<{nombre:string}>(`${this.apiUrl}/empleados/${id}`); 
+  }
+
 }
 
