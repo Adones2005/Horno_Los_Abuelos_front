@@ -77,6 +77,13 @@
                 <td class="px-6 py-3">{{ p.empleado }}</td>
                 <td class="px-6 py-3 text-right">
                   <div class="flex justify-end gap-2">
+                    <button
+                      *ngIf="p.estado === 0 && (role$ | async) === 'gestor'"
+                      (click)="confirmar(p.id); $event.stopPropagation()"
+                      class="inline-flex items-center gap-1 rounded-full bg-amber-50 px-3 py-1 text-xs font-medium text-amber-600 hover:bg-amber-100"
+                    >
+                      <i class="fa-solid fa-check"></i> Confirmar
+                    </button>
                     <a
                       (click)="$event.stopPropagation()"
                       [routerLink]="['/pedidos/detalle', p.id]"
@@ -123,6 +130,13 @@
             </div>
             <p class="mt-2 text-xs text-gray-500">Repartidor: {{ p.empleado ?? '—' }}</p>
             <div class="mt-4 flex gap-2">
+              <button
+                *ngIf="p.estado === 0 && (role$ | async) === 'gestor'"
+                (click)="confirmar(p.id); $event.stopPropagation()"
+                class="flex-1 text-center inline-flex items-center justify-center gap-1 rounded-full bg-amber-50 px-3 py-2 text-xs font-medium text-amber-600 hover:bg-amber-100"
+              >
+                <i class="fa-solid fa-check"></i> Confirmar
+              </button>
               <a
                 (click)="$event.stopPropagation()"
                 [routerLink]="['/pedidos/detalle', p.id]"
