@@ -59,6 +59,26 @@ export const routes: Routes = [
             .then(m => m.ClienteFormComponent),
       },
 
+      /* Direcciones */
+      {
+        path: 'direcciones',
+        loadComponent: () =>
+          import('./pages/private/direcciones/direcciones.component')
+            .then(m => m.DireccionesComponent),
+      },
+      {
+        path: 'direcciones/nuevo',
+        loadComponent: () =>
+          import('./pages/private/direcciones/form/direccion-form.component')
+            .then(m => m.DireccionFormComponent),
+      },
+      {
+        path: 'direcciones/:id',
+        loadComponent: () =>
+          import('./pages/private/direcciones/form/direccion-form.component')
+            .then(m => m.DireccionFormComponent),
+      },
+
       /* Catálogo interno */
       {
         path: 'catalogo-interno',
