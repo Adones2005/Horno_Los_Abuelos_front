@@ -2,16 +2,12 @@
   <div class="container mx-auto px-4 py-6">
     <!-- Escritorio -->
     <div class="hidden lg:block">
-      <div
-        class="mx-auto max-w-5xl overflow-hidden rounded-3xl bg-white shadow-xl ring-1 ring-gray-200"
-      >
+      <div class="mx-auto max-w-5xl overflow-hidden rounded-3xl bg-white shadow-xl ring-1 ring-gray-200">
         <!-- Encabezado -->
         <div class="flex items-center justify-between bg-[#F6F2F1] px-8 py-4">
-          <h2 class="text-lg font-semibold text-gray-700">
-            Pedidos
-          </h2>
+          <h2 class="text-lg font-semibold text-gray-700">Pedidos</h2>
           <div class="flex space-x-2">
-  <button
+             <button
     (click)="filtro = -1"
     [ngClass]="filtro === -1
       ? 'bg-blue-600 text-white'
@@ -50,53 +46,46 @@
   >
     Entregado
   </button>
-</div>
-
+          </div>
         </div>
 
         <!-- Tabla -->
         <div class="overflow-x-auto">
           <table class="w-full divide-y divide-gray-100 text-sm">
             <thead>
-              <tr
-                class="bg-[#faf8f6] text-xs font-semibold uppercase tracking-wider text-gray-600"
-              >
+              <tr class="bg-[#faf8f6] text-xs font-semibold uppercase tracking-wider text-gray-600">
                 <th class="px-6 py-3 text-left">#</th>
                 <th class="px-6 py-3 text-left">Cliente</th>
                 <th class="px-6 py-3 text-left">Dirección</th>
                 <th class="px-6 py-3 text-left">Estado</th>
-                <th class="px-6 py-3 text-left">Repartidor</th>
+                <th class="px-6 py-3 text-left">Comercial</th>
                 <th class="px-6 py-3"></th>
               </tr>
             </thead>
             <tbody class="divide-y divide-gray-100">
               <tr
                 *ngFor="let p of (pedidos ?? []) | estado:filtro"
-                class="hover:bg-[#FFF5ED] transition-colors"
+                class="hover:bg-[#FFF5ED] transition-colors cursor-pointer"
+                (click)="irDetalle(p.id)"
               >
-                <td class="px-6 py-3 font-semibold text-gray-700">
-                  {{ p.id }}
-                </td>
+                <td class="px-6 py-3 font-semibold text-gray-700">{{ p.id }}</td>
                 <td class="px-6 py-3">{{ p.cliente }}</td>
-                <td class="px-6 py-3 truncate max-w-[280px] text-gray-500">
-                  {{ p.direccion }}
-                </td>
+                <td class="px-6 py-3 truncate max-w-[280px] text-gray-500">{{ p.direccion }}</td>
                 <td class="px-6 py-3">
-                  <span [ngClass]="badge(p.estado)">
-                    {{ label(p.estado) }}
-                  </span>
+                  <span [ngClass]="badge(p.estado)">{{ label(p.estado) }}</span>
                 </td>
-                <td class="px-6 py-3">{{ p.empleado ?? '—' }}</td>
+                <td class="px-6 py-3">{{ p.empleado }}</td>
                 <td class="px-6 py-3 text-right">
                   <div class="flex justify-end gap-2">
                     <a
-                      routerLink="detalle/{{ p.id }}"
+                      (click)="$event.stopPropagation()"
+                      [routerLink]="['/pedidos/detalle', p.id]"
                       class="inline-flex items-center gap-1 rounded-full bg-blue-50 px-3 py-1 text-xs font-medium text-blue-600 hover:bg-blue-100"
                     >
-                      <i class="fa-solid fa-pen-to-square"></i> Editar
+                      <i class="fa-solid fa-pen-to-square"></i> Ver más
                     </a>
                     <button
-                      (click)="eliminar(p.id)"
+                      (click)="eliminar(p.id); $event.stopPropagation()"
                       class="inline-flex items-center gap-1 rounded-full bg-red-50 px-3 py-1 text-xs font-medium text-red-600 hover:bg-red-100"
                     >
                       <i class="fa-solid fa-trash"></i> Eliminar
@@ -105,13 +94,8 @@
                 </td>
               </tr>
 
-              <tr
-                *ngIf="(((pedidos ?? []) | estado:filtro).length) === 0"
-              >
-                <td
-                  colspan="6"
-                  class="px-6 py-10 text-center text-gray-400"
-                >
+              <tr *ngIf="((pedidos ?? []) | estado:filtro).length === 0">
+                <td colspan="6" class="px-6 py-10 text-center text-gray-400">
                   Sin pedidos para este filtro
                 </td>
               </tr>
@@ -123,48 +107,43 @@
 
     <!-- Móvil -->
     <div class="lg:hidden space-y-4">
-      <div
-        *ngFor="let p of (pedidos ?? []) | estado:filtro"
-        class="bg-white rounded-2xl shadow p-4 ring-1 ring-gray-200"
-      >
-        <div class="flex justify-between items-start">
-          <div>
-            <h3 class="text-sm font-semibold text-gray-700">
-              Pedido #{{ p.id }}
-            </h3>
-            <p class="text-xs text-gray-500">{{ p.cliente }}</p>
-            <p
-              class="text-xs text-gray-500 truncate max-w-[200px]"
-            >
-              {{ p.direccion }}
-            </p>
+      <ng-container *ngIf="(pedidos ?? []) | estado:filtro as listaFiltrada">
+        <div *ngFor="let p of listaFiltrada">
+          <div
+            class="bg-white rounded-2xl shadow p-4 ring-1 ring-gray-200 cursor-pointer"
+            (click)="irDetalle(p.id)"
+          >
+            <div class="flex justify-between items-start">
+              <div>
+                <h3 class="text-sm font-semibold text-gray-700">Pedido #{{ p.id }}</h3>
+                <p class="text-xs text-gray-500">{{ p.cliente }}</p>
+                <p class="text-xs text-gray-500 truncate max-w-[200px]">{{ p.direccion }}</p>
+              </div>
+              <span [ngClass]="badge(p.estado)">{{ label(p.estado) }}</span>
+            </div>
+            <p class="mt-2 text-xs text-gray-500">Repartidor: {{ p.empleado ?? '—' }}</p>
+            <div class="mt-4 flex gap-2">
+              <a
+                (click)="$event.stopPropagation()"
+                [routerLink]="['/pedidos/detalle', p.id]"
+                class="flex-1 text-center inline-flex items-center justify-center gap-1 rounded-full bg-blue-50 px-3 py-2 text-xs font-medium text-blue-600 hover:bg-blue-100"
+              >
+                <i class="fa-solid fa-pen-to-square"></i> Ver más
+              </a>
+              <button
+                (click)="eliminar(p.id); $event.stopPropagation()"
+                class="flex-1 text-center inline-flex items-center justify-center gap-1 rounded-full bg-red-50 px-3 py-2 text-xs font-medium text-red-600 hover:bg-red-100"
+              >
+                <i class="fa-solid fa-trash"></i> Eliminar
+              </button>
+            </div>
           </div>
-          <span [ngClass]="badge(p.estado)">{{ label(p.estado) }}</span>
         </div>
-        <p class="mt-2 text-xs text-gray-500">
-          Repartidor: {{ p.empleado ?? '—' }}
-        </p>
-        <div class="mt-4 flex gap-2">
-          <a
-            routerLink="detalle/{{ p.id }}"
-            class="flex-1 text-center inline-flex items-center justify-center gap-1 rounded-full bg-blue-50 px-3 py-2 text-xs font-medium text-blue-600 hover:bg-blue-100"
-          >
-            <i class="fa-solid fa-pen-to-square"></i> Editar
-          </a>
-          <button
-            (click)="eliminar(p.id)"
-            class="flex-1 text-center inline-flex items-center justify-center gap-1 rounded-full bg-red-50 px-3 py-2 text-xs font-medium text-red-600 hover:bg-red-100"
-          >
-            <i class="fa-solid fa-trash"></i> Eliminar
-          </button>
+
+        <div *ngIf="listaFiltrada.length === 0" class="text-center text-gray-400 py-10">
+          Sin pedidos para este filtro
         </div>
-      </div>
-      <div
-        *ngIf="(((pedidos ?? []) | estado:filtro).length) === 0"
-        class="text-center text-gray-400 py-10"
-      >
-        Sin pedidos para este filtro
-      </div>
+      </ng-container>
     </div>
   </div>
 </ng-container>
