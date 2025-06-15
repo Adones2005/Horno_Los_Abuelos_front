@@ -1,7 +1,8 @@
 <div class="flex min-h-screen text-gray-800">
   <!-- ───── Sidebar ───── -->
   <aside
-    class="sticky top-16 w-64 shrink-0 overflow-y-auto bg-[#B9A99B] text-gray-100 shadow-lg h-[calc(100vh-4rem)]"
+       [ngClass]="sidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'"
+        class="fixed md:sticky md:top-16 top-0 left-0 z-40 w-64 shrink-0 h-full md:h-[calc(100vh-4rem)] overflow-y-auto bg-[#B9A99B] text-gray-100 shadow-lg transform transition-transform"
   >
     <!-- título -->
     <div class="px-6 py-5 text-xl font-semibold tracking-wide">
@@ -87,8 +88,17 @@
     </nav>
   </aside>
 
-  <!-- ── Área principal ──────────────────────────── -->
+
   <main class="flex-1 shadow-inner lg:rounded-l-3xl">
     <router-outlet></router-outlet>
   </main>
+
+  <button
+    (click)="toggleSidebar()"
+    class="md:hidden fixed bottom-6 right-6 z-50 p-3 rounded-full bg-[#B9A99B] text-white shadow-lg"
+    aria-label="Mostrar menú"
+  >
+    <i class="fa-solid" [ngClass]="sidebarOpen ? 'fa-xmark' : 'fa-bars'"></i>
+  </button>
 </div>
+

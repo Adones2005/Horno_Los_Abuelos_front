@@ -19,6 +19,9 @@ export class ControlPanelComponent {
 
 
 
+    sidebarOpen = false;
+    toggleSidebar(): void { this.sidebarOpen = !this.sidebarOpen; }
+
 
 
 }
