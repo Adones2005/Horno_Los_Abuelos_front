@@ -1,0 +1,17 @@
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.scroll-fade {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.scroll-fade.in-view {
+  animation: fadeInUp 1s ease-out forwards;
+}
+
+.delay-200 { animation-delay: 0.2s; }
+.delay-400 { animation-delay: 0.4s; }
+.delay-500 { animation-delay: 0.5s; }

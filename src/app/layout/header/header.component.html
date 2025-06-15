@@ -33,11 +33,9 @@
 
     <!-- menú desktop -->
     <ul class="hidden md:flex items-center gap-8 font-medium">
-      <li><a routerLink="/" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }" class="nav-link">Inicio</a></li>
+      <li><a routerLink="/" routerLinkActive="active-link" class="nav-link">Inicio</a></li>
       <li><a routerLink="/catalogo"  routerLinkActive="active-link" class="nav-link">Catálogo</a></li>
       <li><a routerLink="/servicios" routerLinkActive="active-link" class="nav-link">Servicios</a></li>
-      <li><a routerLink="/precios"   routerLinkActive="active-link" class="nav-link">Precios</a></li>
-      <li><a routerLink="/acerca"    routerLinkActive="active-link" class="nav-link">Acerca&nbsp;nosotros</a></li>
       <li><a routerLink="/contacto"  routerLinkActive="active-link" class="nav-link">Contáctenos</a></li>
 
       <!-- Panel de control (solo autenticado) -->
@@ -80,8 +78,6 @@
     <li><a routerLink="/" (click)="closeMenu()" routerLinkActive="active-link">Inicio</a></li>
     <li><a routerLink="/catalogo" (click)="closeMenu()" routerLinkActive="active-link">Catálogo</a></li>
     <li><a routerLink="/servicios" (click)="closeMenu()" routerLinkActive="active-link">Servicios</a></li>
-    <li><a routerLink="/precios" (click)="closeMenu()" routerLinkActive="active-link">Precios</a></li>
-    <li><a routerLink="/acerca" (click)="closeMenu()" routerLinkActive="active-link">Acerca&nbsp;nosotros</a></li>
 
     <!-- Panel de control solo autenticado -->
     <li *ngIf="loggedIn$ | async">

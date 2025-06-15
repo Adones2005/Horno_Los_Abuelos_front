@@ -1,8 +1,14 @@
 import { Routes } from '@angular/router';
+import { roleGuard } from './core/guards/role.guard';
 
 export const routes: Routes = [
-  /* ────────── redirect raíz ────────── */
-  { path: '', redirectTo: 'identificarse', pathMatch: 'full' },
+  /* ────────── página principal ────────── */
+  {
+    path: '',
+    loadComponent: () =>
+      import('./pages/public/home/home.component')
+        .then(m => m.HomeComponent),
+  },
 
   /* ────────── públicas ────────── */
   {
@@ -33,6 +39,7 @@ export const routes: Routes = [
   /* ────────── privadas (Panel) ────────── */
   {
     path: 'control-panel',
+    canActivate: [roleGuard(['gestor', 'comercial', 'repartidor'])],
     loadComponent: () =>
       import('./pages/private/control-panel/control-panel.component')
         .then(m => m.ControlPanelComponent),
@@ -42,18 +49,21 @@ export const routes: Routes = [
       /* Clientes */
       {
         path: 'clientes',
+        canActivate: [roleGuard(['comercial'])],
         loadComponent: () =>
           import('./pages/private/clientes/clientes.component')
             .then(m => m.ClientesComponent),
       },
       {
         path: 'clientes/nuevo',
+        canActivate: [roleGuard(['comercial'])],
         loadComponent: () =>
           import('./pages/private/clientes/form/cliente-form.component')
             .then(m => m.ClienteFormComponent),
       },
       {
         path: 'clientes/:id',
+        canActivate: [roleGuard(['comercial'])],
         loadComponent: () =>
           import('./pages/private/clientes/form/cliente-form.component')
             .then(m => m.ClienteFormComponent),
@@ -62,18 +72,21 @@ export const routes: Routes = [
       /* Direcciones */
       {
         path: 'direcciones',
+        canActivate: [roleGuard(['comercial'])],
         loadComponent: () =>
           import('./pages/private/direcciones/direcciones.component')
             .then(m => m.DireccionesComponent),
       },
       {
         path: 'direcciones/nuevo',
+        canActivate: [roleGuard(['comercial'])],
         loadComponent: () =>
           import('./pages/private/direcciones/form/direccion-form.component')
             .then(m => m.DireccionFormComponent),
       },
       {
         path: 'direcciones/:id',
+        canActivate: [roleGuard(['comercial'])],
         loadComponent: () =>
           import('./pages/private/direcciones/form/direccion-form.component')
             .then(m => m.DireccionFormComponent),
@@ -82,18 +95,21 @@ export const routes: Routes = [
       /* Catálogo interno */
       {
         path: 'catalogo-interno',
+        canActivate: [roleGuard(['gestor'])],
         loadComponent: () =>
           import('./pages/private/catalogo/catalogo.component')
             .then(m => m.CatalogoComponent),
       },
       {
         path: 'catalogo-interno/nuevo',
+        canActivate: [roleGuard(['gestor'])],
         loadComponent: () =>
           import('./pages/private/catalogo/form-catalogo/form-catalogo.component')
             .then(m => m.FormCatalogoComponent),
       },
       {
         path: 'catalogo-interno/editar/:id',
+        canActivate: [roleGuard(['gestor'])],
         loadComponent: () =>
           import('./pages/private/catalogo/form-catalogo/form-catalogo.component')
             .then(m => m.FormCatalogoComponent),
@@ -102,6 +118,7 @@ export const routes: Routes = [
       /* Empleados y autorización */
       {
         path: 'empleados',
+        canActivate: [roleGuard(['gestor'])],
         loadComponent: () =>
           import('./pages/private/empleados/empleados.component')
             .then(m => m.EmpleadosComponent),
@@ -121,6 +138,10 @@ export const routes: Routes = [
       /* Reparto diario */
       {
         path: 'repartos',
+        canActivate: [() =>
+          import('./core/guards/repartidor.guard')
+            .then(m => m.repartidorGuard)
+        ],
         loadComponent: () =>
           import('./pages/private/repartos/repartos.component')
             .then(m => m.RepartosComponent),

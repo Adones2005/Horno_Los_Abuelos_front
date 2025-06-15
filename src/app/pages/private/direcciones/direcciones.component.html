@@ -8,7 +8,7 @@
     {{ errorMsg }}
   </div>
 
-  <div class="overflow-x-auto">
+  <div class="overflow-x-auto hidden md:block">
     <table class="min-w-full divide-y divide-gray-200 bg-white shadow-sm rounded-lg">
       <thead class="bg-[#E5D2BC] text-left text-xs uppercase tracking-wider text-gray-800">
         <tr>
@@ -30,11 +30,49 @@
           <td class="px-4 py-2">{{ d.ruta }}</td>
           <td class="px-4 py-2">{{ d.cliente }}</td>
           <td class="px-4 py-2">
-            <button (click)="editar(d)" class="text-sm text-blue-600 hover:underline">Editar</button>
-            <button (click)="borrarConfirm(d)" class="ml-3 text-sm text-red-600 hover:underline">Borrar</button>
+            <button
+              (click)="editar(d)"
+              class="inline-flex items-center gap-1 rounded-full bg-blue-50 px-3 py-1 text-xs font-medium text-blue-600 hover:bg-blue-100"
+            >
+              <i class="fa-solid fa-pen-to-square"></i> Editar
+            </button>
+            <button
+              (click)="borrarConfirm(d)"
+              class="ml-2 inline-flex items-center gap-1 rounded-full bg-red-50 px-3 py-1 text-xs font-medium text-red-600 hover:bg-red-100"
+            >
+              <i class="fa-solid fa-trash"></i> Borrar
+            </button>
           </td>
         </tr>
       </tbody>
     </table>
+  </div>
+  
+  <!-- lista móvil -->
+  <div class="md:hidden space-y-4" *ngIf="direcciones$ | async as dirs">
+    <div
+      *ngFor="let d of dirs"
+      class="rounded-2xl bg-white p-4 shadow ring-1 ring-gray-200"
+    >
+      <div class="text-sm font-semibold text-gray-700">{{ d.calle }}</div>
+      <div class="text-xs text-gray-500">ID: {{ d.id }}</div>
+      <div class="text-xs text-gray-500">{{ d.ciudad }} ({{ d.codigoPostal }})</div>
+      <div class="text-xs text-gray-500">Ruta: {{ d.ruta }}</div>
+      <div class="text-xs text-gray-500">Cliente: {{ d.cliente }}</div>
+      <div class="mt-3 flex gap-2">
+        <button
+          (click)="editar(d)"
+          class="flex-1 text-center inline-flex items-center justify-center gap-1 rounded-full bg-blue-50 px-3 py-2 text-xs font-medium text-blue-600 hover:bg-blue-100"
+        >
+          <i class="fa-solid fa-pen-to-square"></i> Editar
+        </button>
+        <button
+          (click)="borrarConfirm(d)"
+          class="flex-1 text-center inline-flex items-center justify-center gap-1 rounded-full bg-red-50 px-3 py-2 text-xs font-medium text-red-600 hover:bg-red-100"
+        >
+          <i class="fa-solid fa-trash"></i> Borrar
+        </button>
+      </div>
+    </div>
   </div>
 </section>

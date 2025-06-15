@@ -1,22 +1,113 @@
-<div class="p-6" *ngIf="pedidos.length > 0; else noData">
-  <div class="flex flex-col lg:flex-row gap-6">
-    <div id="map" class="flex-1 h-80 lg:h-[500px] rounded shadow"></div>
-    <div class="w-full lg:w-80 bg-white rounded shadow p-4 space-y-3">
-      <h2 class="text-lg font-semibold text-gray-700">Pedidos de hoy</h2>
-      <div *ngFor="let p of pedidos" class="border-b pb-2 last:border-b-0 last:pb-0">
-        <div class="flex items-center justify-between">
-          <span class="font-medium text-sm">#{{ p.id }}</span>
-          <button (click)="entregar(p)" [disabled]="p.estado === 2"
-                  class="ml-2 rounded bg-green-600 text-white text-xs px-3 py-1 disabled:opacity-50">
-            Entregar
-          </button>
-        </div>
-        <p class="text-xs text-gray-600 truncate">{{ p.direccion }}</p>
-      </div>
-    </div>
+<!-- repartos.component.html (versión estética & responsive) -->
+
+<!-- ─── Mensaje de error global ─────────────────────────────────────── -->
+<div *ngIf="errorMsg" class="p-4 md:p-6">
+  <div
+    class="rounded-lg bg-red-50 border border-red-200 text-red-700 text-center px-4 py-3"
+  >
+    {{ errorMsg }}
   </div>
 </div>
 
-<ng-template #noData>
-  <div class="p-6 text-center text-gray-500">Sin pedidos para hoy</div>
-</ng-template>
+<!-- ─── Contenedor principal ────────────────────────────────────────── -->
+<section
+  class="max-w-screen-xl mx-auto mt-10 px-4 md:px-6 lg:px-8 pb-10 space-y-6 lg:space-y-0 lg:flex lg:gap-8"
+>
+  <!-- ░░░░░ MAPA ░░░░░ -->
+  <div
+    #mapRef
+    id="map"
+    class="w-full h-[55vh] md:h-[65vh] lg:flex-1 rounded-2xl shadow-lg overflow-hidden bg-gray-200"
+  ></div>
+
+  <!-- ░░░░░ LISTA DE PEDIDOS ░░░░░ -->
+  <ng-container *ngIf="pedidos.length > 0; else noData">
+    <aside
+      class="w-full lg:w-96 bg-white/70 backdrop-blur rounded-2xl shadow-lg ring-1 ring-gray-200/50
+             p-5 flex flex-col"
+    >
+      <!-- título + badge de contador -->
+      <header
+        class="flex items-center justify-between mb-4 border-b pb-3 border-dashed border-gray-300/70"
+      >
+        <h2 class="text-xl font-semibold text-gray-800">Pedidos de hoy</h2>
+        <span
+          class="inline-flex items-center justify-center rounded-full bg-gray-100 text-gray-700
+                 text-xs px-2.5 py-1 font-medium"
+          >{{ pedidos.length }}</span
+        >
+      </header>
+
+      <div class="grow overflow-y-auto pr-1">
+        <!-- Card por pedido -->
+        <article
+          *ngFor="let p of pedidos"
+          class="group rounded-xl transition hover:bg-gray-50 px-3.5 py-3 mb-3 last:mb-0"
+        >
+          <div class="flex items-start justify-between gap-3">
+            <!-- #id + dirección -->
+            <div class="flex-1">
+              <p class="font-medium text-gray-800 text-sm">
+                #{{ p.id }}
+                <span
+                  class="ml-2 text-[10px] align-middle font-semibold px-1.5 py-0.5 rounded
+                         {{ p.estado === 0 && 'bg-amber-100 text-amber-700' }}
+                         {{ p.estado === 1 && 'bg-blue-100  text-blue-700'  }}
+                         {{ p.estado === 2 && 'bg-green-100 text-green-700' }}"
+                >
+                  {{
+                    p.estado === 0 ? 'Creado'
+                      : p.estado === 1 ? 'Confirmado'
+                      : 'Entregado'
+                  }}
+                </span>
+              </p>
+              <p
+                class="text-xs text-gray-600 leading-snug mt-0.5 line-clamp-2 break-words"
+                title="{{ p.direccion }}"
+              >
+                {{ p.direccion }}
+              </p>
+            </div>
+
+            <!-- Botón entregar -->
+            <button
+              (click)="entregar(p)"
+              [disabled]="p.estado === 2"
+              class="rounded-full bg-green-600/90 text-white text-[11px] px-3 py-1.5
+                     disabled:bg-gray-400 disabled:cursor-not-allowed
+                     transition group-hover:scale-105"
+            >
+              Entregar
+            </button>
+          </div>
+        </article>
+      </div>
+    </aside>
+  </ng-container>
+
+  <!-- ░░░░░ SIN PEDIDOS ░░░░░ -->
+  <ng-template #noData>
+    <aside
+      class="w-full lg:w-96 flex flex-col items-center justify-center
+             bg-white/70 backdrop-blur rounded-2xl shadow-lg ring-1 ring-gray-200/50
+             text-gray-500 text-center p-6"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="h-10 w-10 mb-3 text-gray-400"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+        stroke-width="1.5"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M3 3h18M9 8h6m4 13H5a2 2 0 0 1-2-2V6.5M21 10v9a2 2 0 0 1-2 2h-1.5M3 6.5 3 21"
+        />
+      </svg>
+      <p class="text-sm">Sin pedidos para hoy</p>
+    </aside>
+  </ng-template>
+</section>
