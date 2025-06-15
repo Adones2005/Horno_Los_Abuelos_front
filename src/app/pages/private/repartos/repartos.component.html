@@ -1,1 +1,22 @@
-<p>repartos works!</p>
+<div class="p-6" *ngIf="pedidos.length > 0; else noData">
+  <div class="flex flex-col lg:flex-row gap-6">
+    <div id="map" class="flex-1 h-80 lg:h-[500px] rounded shadow"></div>
+    <div class="w-full lg:w-80 bg-white rounded shadow p-4 space-y-3">
+      <h2 class="text-lg font-semibold text-gray-700">Pedidos de hoy</h2>
+      <div *ngFor="let p of pedidos" class="border-b pb-2 last:border-b-0 last:pb-0">
+        <div class="flex items-center justify-between">
+          <span class="font-medium text-sm">#{{ p.id }}</span>
+          <button (click)="entregar(p)" [disabled]="p.estado === 2"
+                  class="ml-2 rounded bg-green-600 text-white text-xs px-3 py-1 disabled:opacity-50">
+            Entregar
+          </button>
+        </div>
+        <p class="text-xs text-gray-600 truncate">{{ p.direccion }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #noData>
+  <div class="p-6 text-center text-gray-500">Sin pedidos para hoy</div>
+</ng-template>
